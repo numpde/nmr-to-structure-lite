@@ -1,0 +1,1 @@
+numpy==1.26.4  # The last release before numpy 2.0.0
