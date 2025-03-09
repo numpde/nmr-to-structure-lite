@@ -41,7 +41,7 @@ if [ "$(hostname)" == "fw" ]; then
 
 # If hostname starts with "150-136-"
 elif [[ "$(hostname)" == 150-136-* ]]; then
-  apt install libarchive-tools
+  sudo apt install libarchive-tools
 
   CONDA="${HOME}/fs/miniconda"
 
