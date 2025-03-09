@@ -41,6 +41,8 @@ if [ "$(hostname)" == "fw" ]; then
 
 # If hostname starts with "150-136-"
 elif [[ "$(hostname)" == 150-136-* ]]; then
+  apt install libarchive-tools
+
   CONDA="${HOME}/fs/miniconda"
 
   DATA_PATH="${HOME}/fs/tmp/${PRJ_NAME}/${EXPERIMENT_NAME}"
@@ -126,8 +128,9 @@ fi
 
 ## PART E: Train the model
 
-onmt_train -config "${CONFIG_FILE}" 2>&1 | \
-  grep -Ev "Weighted corpora loaded so far|corpus_1:" | \
-  grep -Ev "FutureWarning|def (forward|backward)" | \
-  tee "${RUN_PATH}/train.log"
+onmt_train -config "${CONFIG_FILE}" 2>&1
 
+#onmt_train -config "${CONFIG_FILE}" 2>&1 | \
+#  grep -Ev "Weighted corpora loaded so far|corpus_1:" | \
+#  grep -Ev "FutureWarning|def (forward|backward)" | \
+#  tee "${RUN_PATH}/train.log"
