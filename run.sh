@@ -38,6 +38,13 @@ if [ "$(hostname)" == "fw" ]; then
 
   DATA_PATH="${HOME}/tmp/${PRJ_NAME}/${EXPERIMENT_NAME}"
   mkdir -p ${DATA_PATH}
+
+# If hostname starts with "150-136-"
+elif [[ "$(hostname)" == 150-136-* ]]; then
+  CONDA="${HOME}/fs/miniconda"
+
+  DATA_PATH="${HOME}/fs/tmp/${PRJ_NAME}/${EXPERIMENT_NAME}"
+  mkdir -p ${DATA_PATH}
 else
   log_error_and_exit "Unknown host: $(hostname)"
 fi
