@@ -2,7 +2,9 @@
 
 PRJ_NAME="nmr-to-structure-lite"
 
-set -e
+set -e  # Exit immediately if a command exits with a non-zero status
+set -x  # Print commands and their arguments as they are executed
+
 
 function log_error_and_exit {
   echo "Error: $1"
@@ -27,12 +29,12 @@ done
 ROOT_PATH=$(realpath $0)
 ROOT_DIR=$(dirname $ROOT_PATH)
 
-PYTHON=python3.9
-
 # Depending on the host, select target path
 # E.g., on host 'fw':
 if [ "$(hostname)" == "fw" ]; then
-  CONDA="${HOME}/miniconda3"
+  export HSA_OVERRIDE_GFX_VERSION=11.0.0
+
+  CONDA="${HOME}/Programs/miniconda3"
 
   DATA_PATH="${HOME}/tmp/${PRJ_NAME}/${EXPERIMENT_NAME}"
   mkdir -p ${DATA_PATH}
@@ -40,23 +42,23 @@ else
   log_error_and_exit "Unknown host: $(hostname)"
 fi
 
-VENV="${DATA_PATH}/venv"
-
 
 ## PART A: Setup the python environment
 
 # We assume that a base environment is already set up
 BASE_ENV="${PRJ_NAME}"
-$CONDA activate ${BASE_ENV}
 
-EXP_ENV="${PRJ_NAME}-${EXPERIMENT_NAME}"
+source "${CONDA}/bin/activate" "${BASE_ENV}"
+conda activate "${BASE_ENV}"  # just in case
 
-# Now copy the environment to the target path
-$CONDA create --name ${EXP_ENV} --use-local --override-channels
-$CONDA activate ${EXP_ENV}
-
-# Install/check the requirements
-pip install -r requirements.txt
+#EXP_ENV="${PRJ_NAME}_${EXPERIMENT_NAME}"
+#
+## Now copy the environment to the target path
+#conda create --name ${EXP_ENV} --use-local --override-channels -c conda-forge
+#conda activate ${EXP_ENV}
+#
+## Install/check the requirements
+#pip install -r requirements.txt
 
 
 ## PART B: Download the dataset
@@ -95,21 +97,30 @@ sed -i "s|^[[:space:]]*src_vocab:.*|src_vocab: \"${RUN_PATH}/src_vocab.txt\"|" "
 sed -i "s|^[[:space:]]*tgt_vocab:.*|tgt_vocab: \"${RUN_PATH}/tgt_vocab.txt\"|" "${CONFIG_FILE}"
 sed -i "/corpus_1:/,/valid:/ s|^\([[:space:]]*\)path_src:[[:space:]]*{}.*|\1path_src: \"${DATASET_PATH}/src-train.txt\"|" "${CONFIG_FILE}"
 sed -i "/corpus_1:/,/valid:/ s|^\([[:space:]]*\)path_tgt:[[:space:]]*{}.*|\1path_tgt: \"${DATASET_PATH}/tgt-train.txt\"|" "${CONFIG_FILE}"
-sed -i "/valid:/,/^$/ s|^\([[:space:]]*\)path_src:[[:space:]]*{}.*|\1path_src: \"${DATASET_PATH}/src-valid.txt\"|" "${CONFIG_FILE}"
-sed -i "/valid:/,/^$/ s|^\([[:space:]]*\)path_tgt:[[:space:]]*{}.*|\1path_tgt: \"${DATASET_PATH}/tgt-valid.txt\"|" "${CONFIG_FILE}"
+sed -i "/valid:/,/^$/ s|^\([[:space:]]*\)path_src:[[:space:]]*{}.*|\1path_src: \"${DATASET_PATH}/src-val.txt\"|" "${CONFIG_FILE}"
+sed -i "/valid:/,/^$/ s|^\([[:space:]]*\)path_tgt:[[:space:]]*{}.*|\1path_tgt: \"${DATASET_PATH}/tgt-val.txt\"|" "${CONFIG_FILE}"
 sed -i "s|^[[:space:]]*tensorboard_log_dir:.*|tensorboard_log_dir: \"${RUN_PATH}/tensorboard\"|" "${CONFIG_FILE}"
 sed -i "s|^[[:space:]]*save_model:.*|save_model: \"${RUN_PATH}/model\"|" "${CONFIG_FILE}"
 
 # Check that no "{}" are left in the file
 grep -q "{}" "${CONFIG_FILE}" && log_error_and_exit "Unresolved placeholders in ${CONFIG_FILE}"
 
+#rm -f "${RUN_PATH}/*.log" "${RUN_PATH}/*.err"
+
 
 ## PART D: Build the vocabulary
 
-onmt_build_vocab -config "${CONFIG_FILE}" -n_sample -1
+if [ -f "${RUN_PATH}/src_vocab.txt" ] && [ -f "${RUN_PATH}/tgt_vocab.txt" ]; then
+  echo "Vocabulary files already exist in ${RUN_PATH}"
+else
+  onmt_build_vocab -config "${CONFIG_FILE}" -n_sample 10000
+fi
 
 
 ## PART E: Train the model
 
-onmt_train -config "${CONFIG_FILE}"
+onmt_train -config "${CONFIG_FILE}" 2>&1 | \
+  grep -Ev "Weighted corpora loaded so far|corpus_1:" | \
+  grep -Ev "FutureWarning|def (forward|backward)" | \
+  tee "${RUN_PATH}/train.log"
 

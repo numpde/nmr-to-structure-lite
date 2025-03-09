@@ -19,6 +19,11 @@ data:
         path_tgt: {} #data/tgt-val.txt
 
 
+# Train on a single GPU
+world_size: 1
+gpu_ranks: [0]
+
+
 # Tensorboard
 tensorboard: True
 tensorboard_log_dir: {}
