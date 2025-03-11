@@ -18,6 +18,9 @@ from onmt.inputters.inputter import dict_to_vocabs
 from ctranslate2.converters.opennmt_tf import _load_vocab
 from onmt.transforms import make_transforms
 
+# cf.
+# https://github.com/OpenNMT/OpenNMT-py/blob/97111d97551c24857076a4102eabdb468b35cff4/onmt/encoders/transformer.py#L19
+
 checkpoint_path = 'model_step_10000.pt'
 checkpoint = torch.load(checkpoint_path, map_location='cpu', weights_only=False)
 

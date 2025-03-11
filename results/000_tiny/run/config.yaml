@@ -1,5 +1,8 @@
 # transformer_template.yaml
 
+# Originally from
+# https://github.com/rxn4chemistry/nmr-to-structure/blob/main/src/nmr_to_structure/training/transformer_template_tiny_cpu.yaml
+
 ## Where the samples will be written
 save_data: "/home/ubuntu/fs/tmp/nmr-to-structure-lite/000_tiny/run"
 
