@@ -1,0 +1,9 @@
+C N C ( = O ) c 1 c c c c c 1 N C ( = O ) C O c 1 c c c ( C ( C ) = O ) c c 1
+C [C@@] ( O ) ( C N = [N+] = [N-] ) c 1 c c c c c 1 Br
+N C ( = O ) C C [C@H] ( N ) C ( = O ) N c 1 c c c ( - c 2 c c c ( C ( = O ) O ) c ( = O ) [nH] 2 ) c c 1
+O = C ( O ) C = C C C C C C c 1 c c c c 2 c n c n 1 2
+C O C ( = O ) C N S ( = O ) ( = O ) c 1 c c c ( O C C 2 C C 2 ) c c 1
+C O c 1 c c c ( N 2 C C N ( c 3 c ( C ) c ( C ) c 4 c ( c 3 C ) C ( c 3 c c c ( C ) c c 3 ) C ( C ) ( C ) O 4 ) C C 2 ) c c 1
+C C 1 C N ( c 2 c c 3 c c c c c 3 c ( = O ) [nH] 2 ) C C ( C ) N 1
+C O C c 1 c c c ( O C ( F ) ( F ) F ) c ( C = N O ) c 1
+C N 1 C ( = S ) N ( C c 2 c c c c c 2 ) C ( = O ) C 1 = C 1 S c 2 c c c c c 2 N 1 C

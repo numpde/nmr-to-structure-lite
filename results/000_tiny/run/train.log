@@ -1,0 +1,128 @@
+[2025-03-09 18:45:24,608 INFO] Missing transforms field for corpus_1 data, set to default: [].
+[2025-03-09 18:45:24,608 WARNING] Corpus corpus_1's weight should be given. We default it to 1 for you.
+[2025-03-09 18:45:24,608 INFO] Missing transforms field for valid data, set to default: [].
+[2025-03-09 18:45:24,608 INFO] Parsed 2 corpora from -data.
+[2025-03-09 18:45:24,608 INFO] Get special vocabs from Transforms: {'src': [], 'tgt': []}.
+[2025-03-09 18:45:24,610 INFO] The first 10 tokens of the vocabs are:['<unk>', '<blank>', '<s>', '</s>', '|', 'J', '1H', '2H', 'm', 's']
+[2025-03-09 18:45:24,610 INFO] The decoder start token is: <s>
+[2025-03-09 18:45:24,610 INFO] Building model...
+[2025-03-09 18:45:24,894 INFO] Switching model to float32 for amp/apex_amp
+[2025-03-09 18:45:24,894 INFO] Non quantized layer compute is fp32
+[2025-03-09 18:45:25,022 INFO] NMTModel(
+  (encoder): TransformerEncoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(1104, 32, padding_idx=1)
+        )
+        (pe): PositionalEncoding()
+      )
+      (dropout): Dropout(p=0.3, inplace=False)
+    )
+    (transformer): ModuleList(
+      (0-1): 2 x TransformerEncoderLayer(
+        (self_attn): MultiHeadedAttention(
+          (linear_keys): Linear(in_features=32, out_features=32, bias=False)
+          (linear_values): Linear(in_features=32, out_features=32, bias=False)
+          (linear_query): Linear(in_features=32, out_features=32, bias=False)
+          (softmax): Softmax(dim=-1)
+          (dropout): Dropout(p=0.2, inplace=False)
+          (final_linear): Linear(in_features=32, out_features=32, bias=False)
+        )
+        (feed_forward): PositionwiseFeedForward(
+          (w_1): Linear(in_features=32, out_features=32, bias=False)
+          (w_2): Linear(in_features=32, out_features=32, bias=False)
+          (layer_norm): LayerNorm((32,), eps=1e-06, elementwise_affine=True)
+          (dropout_1): Dropout(p=0.3, inplace=False)
+          (dropout_2): Dropout(p=0.3, inplace=False)
+        )
+        (layer_norm): LayerNorm((32,), eps=1e-06, elementwise_affine=True)
+        (dropout): Dropout(p=0.3, inplace=False)
+      )
+    )
+    (layer_norm): LayerNorm((32,), eps=1e-06, elementwise_affine=True)
+  )
+  (decoder): TransformerDecoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(40, 32, padding_idx=1)
+        )
+        (pe): PositionalEncoding()
+      )
+      (dropout): Dropout(p=0.3, inplace=False)
+    )
+    (layer_norm): LayerNorm((32,), eps=1e-06, elementwise_affine=True)
+    (transformer_layers): ModuleList(
+      (0-1): 2 x TransformerDecoderLayer(
+        (self_attn): MultiHeadedAttention(
+          (linear_keys): Linear(in_features=32, out_features=32, bias=False)
+          (linear_values): Linear(in_features=32, out_features=32, bias=False)
+          (linear_query): Linear(in_features=32, out_features=32, bias=False)
+          (softmax): Softmax(dim=-1)
+          (dropout): Dropout(p=0.2, inplace=False)
+          (final_linear): Linear(in_features=32, out_features=32, bias=False)
+        )
+        (feed_forward): PositionwiseFeedForward(
+          (w_1): Linear(in_features=32, out_features=32, bias=False)
+          (w_2): Linear(in_features=32, out_features=32, bias=False)
+          (layer_norm): LayerNorm((32,), eps=1e-06, elementwise_affine=True)
+          (dropout_1): Dropout(p=0.3, inplace=False)
+          (dropout_2): Dropout(p=0.3, inplace=False)
+        )
+        (layer_norm_1): LayerNorm((32,), eps=1e-06, elementwise_affine=True)
+        (dropout): Dropout(p=0.3, inplace=False)
+        (context_attn): MultiHeadedAttention(
+          (linear_keys): Linear(in_features=32, out_features=32, bias=False)
+          (linear_values): Linear(in_features=32, out_features=32, bias=False)
+          (linear_query): Linear(in_features=32, out_features=32, bias=False)
+          (softmax): Softmax(dim=-1)
+          (dropout): Dropout(p=0.2, inplace=False)
+          (final_linear): Linear(in_features=32, out_features=32, bias=False)
+        )
+        (layer_norm_2): LayerNorm((32,), eps=1e-06, elementwise_affine=True)
+      )
+    )
+  )
+  (generator): Linear(in_features=32, out_features=40, bias=True)
+)
+[2025-03-09 18:45:25,022 INFO] encoder: 47936
+[2025-03-09 18:45:25,022 INFO] decoder: 23528
+[2025-03-09 18:45:25,022 INFO] * number of parameters: 71464
+[2025-03-09 18:45:25,023 INFO] Trainable parameters = {'torch.float32': 71464, 'torch.float16': 0, 'torch.uint8': 0, 'torch.int8': 0}
+[2025-03-09 18:45:25,023 INFO] Non trainable parameters = {'torch.float32': 0, 'torch.float16': 0, 'torch.uint8': 0, 'torch.int8': 0}
+[2025-03-09 18:45:25,023 INFO]  * src vocab size = 1104
+[2025-03-09 18:45:25,023 INFO]  * tgt vocab size = 40
+2025-03-09 18:45:25.671242: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-03-09 18:45:25.828887: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1741545925.895231    3929 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1741545925.915616    3929 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-03-09 18:45:26.059666: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX512F AVX512_VNNI, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[2025-03-09 18:45:28,332 INFO] Starting training on GPU: [0]
+[2025-03-09 18:45:28,332 INFO] Start training loop and validate every 2 steps...
+[2025-03-09 18:45:28,333 INFO] Scoring with: None
+[2025-03-09 18:45:58,156 INFO] Step  2/    5; acc: 2.7; ppl:  50.3; xent: 3.9; lr: 0.00000; sents:     105; bsz:  428/ 237/ 7; 229/127 tok/s;     30 sec;
+The batch will be filled until we reach 1, its size may exceed 32 tokens
+The batch will be filled until we reach 1, its size may exceed 32 tokens
+[2025-03-09 18:46:00,228 INFO] valid stats calculation
+                           took: 2.0708703994750977 s.
+[2025-03-09 18:46:00,228 INFO] Train perplexity: 50.2722
+[2025-03-09 18:46:00,228 INFO] Train accuracy: 2.69485
+[2025-03-09 18:46:00,228 INFO] Sentences processed: 105
+[2025-03-09 18:46:00,228 INFO] Average bsz:  428/ 237/ 7
+[2025-03-09 18:46:00,228 INFO] Validation perplexity: 40.5707
+[2025-03-09 18:46:00,229 INFO] Validation accuracy: 5.78035
+[2025-03-09 18:46:00,373 INFO] Step  4/    5; acc: 3.0; ppl:  49.2; xent: 3.9; lr: 0.00000; sents:      93; bsz:  441/ 248/ 6; 3181/1788 tok/s;     32 sec;
+The batch will be filled until we reach 1, its size may exceed 32 tokens
+The batch will be filled until we reach 1, its size may exceed 32 tokens
+[2025-03-09 18:46:02,457 INFO] valid stats calculation
+                           took: 2.083336114883423 s.
+[2025-03-09 18:46:02,457 INFO] Train perplexity: 49.7312
+[2025-03-09 18:46:02,457 INFO] Train accuracy: 2.83944
+[2025-03-09 18:46:02,457 INFO] Sentences processed: 198
+[2025-03-09 18:46:02,457 INFO] Average bsz:  434/ 242/ 6
+[2025-03-09 18:46:02,458 INFO] Validation perplexity: 40.3588
+[2025-03-09 18:46:02,458 INFO] Validation accuracy: 5.20231
+[2025-03-09 18:46:33,716 INFO] Saving checkpoint /home/ubuntu/fs/tmp/nmr-to-structure-lite/000_tiny/run/model_step_5.pt

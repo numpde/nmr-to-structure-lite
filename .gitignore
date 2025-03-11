@@ -1,3 +1,7 @@
+# Big files
+!results/**/config.yaml  # not working
+results/001_big/*
+
 # pycharm
 .idea
 

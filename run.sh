@@ -128,9 +128,9 @@ fi
 
 ## PART E: Train the model
 
-onmt_train -config "${CONFIG_FILE}" 2>&1
+#onmt_train -config "${CONFIG_FILE}" 2>&1
 
-#onmt_train -config "${CONFIG_FILE}" 2>&1 | \
-#  grep -Ev "Weighted corpora loaded so far|corpus_1:" | \
-#  grep -Ev "FutureWarning|def (forward|backward)" | \
-#  tee "${RUN_PATH}/train.log"
+onmt_train -config "${CONFIG_FILE}" 2>&1 | \
+  grep -Ev "Weighted corpora loaded so far|corpus_1:" | \
+  grep -Ev "FutureWarning|def (forward|backward)" | \
+  tee "${RUN_PATH}/train.log"
