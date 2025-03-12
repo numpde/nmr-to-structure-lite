@@ -103,7 +103,8 @@ class ZenodoClient:
             headers={"Authorization": f"Bearer {self.token}"},
         )
         response.raise_for_status()
-        return response.json()
+        data = response.json()
+        return data
 
     def upload_file(self, file_path: Path, timeout: int = 30) -> dict:
         """Upload the file to Zenodo using a progress bar and return the JSON response."""
@@ -169,6 +170,7 @@ def sort_files_on_zenodo(zenodo_id: int):
     with create_retry_session() as session:
         client = ZenodoClient(zenodo_token, zenodo_id, session)
         files = client.get_file_list()
+        print(files)
         files = natsorted(files, key=(lambda x: x['filename']))
 
     with create_retry_session() as session:
@@ -180,7 +182,7 @@ def sort_files_on_zenodo(zenodo_id: int):
 if __name__ == "__main__":
     zenodo_id = 15006666
 
-    # sort_files_on_zenodo(zenodo_id)
+    # sort_files_on_zenodo(zenodo_id); exit(0);
 
     files_to_upload = natsorted(Path(".").parent.glob("results/001_big/run/**/*_*.pt"))
 
