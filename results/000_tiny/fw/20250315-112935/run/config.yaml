@@ -4,22 +4,22 @@
 # https://github.com/rxn4chemistry/nmr-to-structure/blob/main/src/nmr_to_structure/training/transformer_template_tiny_cpu.yaml
 
 ## Where the samples will be written
-save_data: "/home/ubuntu/fs/tmp/nmr-to-structure-lite/000_tiny/run"
+save_data: "/home/ra/tmp/nmr-to-structure-lite/000_tiny/fw/20250315-112935/run"
 
 ## Where the vocab(s) will be written
-src_vocab: "/home/ubuntu/fs/tmp/nmr-to-structure-lite/000_tiny/run/src_vocab.txt"
-tgt_vocab: "/home/ubuntu/fs/tmp/nmr-to-structure-lite/000_tiny/run/tgt_vocab.txt"
+src_vocab: "/home/ra/tmp/nmr-to-structure-lite/000_tiny/fw/20250315-112935/run/src_vocab.txt"
+tgt_vocab: "/home/ra/tmp/nmr-to-structure-lite/000_tiny/fw/20250315-112935/run/tgt_vocab.txt"
 
 overwrite: True
 
 # Corpus opts:
 data:
     corpus_1:
-        path_src: "/home/ubuntu/fs/tmp/nmr-to-structure-lite/000_tiny/data/src-train.txt"
-        path_tgt: "/home/ubuntu/fs/tmp/nmr-to-structure-lite/000_tiny/data/tgt-train.txt"
+        path_src: "/home/ra/tmp/nmr-to-structure-lite/000_tiny/fw/20250315-112935/data/src-train.txt"
+        path_tgt: "/home/ra/tmp/nmr-to-structure-lite/000_tiny/fw/20250315-112935/data/tgt-train.txt"
     valid:
-        path_src: "/home/ubuntu/fs/tmp/nmr-to-structure-lite/000_tiny/data/src-val.txt"
-        path_tgt: "/home/ubuntu/fs/tmp/nmr-to-structure-lite/000_tiny/data/tgt-val.txt"
+        path_src: "/home/ra/tmp/nmr-to-structure-lite/000_tiny/fw/20250315-112935/data/src-val.txt"
+        path_tgt: "/home/ra/tmp/nmr-to-structure-lite/000_tiny/fw/20250315-112935/data/tgt-val.txt"
 
 
 # Train on a single GPU
@@ -29,10 +29,10 @@ gpu_ranks: [0]
 
 # Tensorboard
 tensorboard: True
-tensorboard_log_dir: "/home/ubuntu/fs/tmp/nmr-to-structure-lite/000_tiny/run/tensorboard"
+tensorboard_log_dir: "/home/ra/tmp/nmr-to-structure-lite/000_tiny/fw/20250315-112935/run/tensorboard"
 
 # Where to save the checkpoints
-save_model: "/home/ubuntu/fs/tmp/nmr-to-structure-lite/000_tiny/run/model"
+save_model: "/home/ra/tmp/nmr-to-structure-lite/000_tiny/fw/20250315-112935/run/model"
 save_checkpoint_steps: 10000
 
 # Model parameters
