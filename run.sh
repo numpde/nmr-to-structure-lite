@@ -40,7 +40,7 @@ if [ "$(hostname)" == "fw" ]; then
 elif [[ "$(hostname)" == "lambda" ]]; then
   sudo apt install libarchive-tools
 
-  CONDA="${HOME}/fs/miniconda"
+  CONDA="${HOME}/miniconda"
 
   DATA_PATH="${HOME}/fs/tmp"
   MACHINE="lambda"
