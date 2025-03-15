@@ -1,6 +1,6 @@
 # Big files
-!results/**/config.yaml  # not working
-results/001_big/*
+results/*big*/**/model_step*.pt
+results/*big*/**/data/*.txt
 
 # pycharm
 .idea
