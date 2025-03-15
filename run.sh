@@ -37,8 +37,7 @@ if [ "$(hostname)" == "fw" ]; then
   DATA_PATH="${HOME}/tmp"
   MACHINE="fw"
 
-# If hostname starts with "150-136-" (Lambda)
-elif [[ "$(hostname)" == 150-136-* ]]; then
+elif [[ "$(hostname)" == "lambda" ]]; then
   sudo apt install libarchive-tools
 
   CONDA="${HOME}/fs/miniconda"
