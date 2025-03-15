@@ -48,7 +48,8 @@ else
   log_error_and_exit "Unknown host: $(hostname)"
 fi
 
-DATA_PATH="${DATA_PATH}/${PRJ_NAME}/${EXPERIMENT_NAME}/${MACHINE}/$(date +'%Y%m%d-%H%M%S')"
+DATA_PATH_ROOT="${DATA_PATH}/${PRJ_NAME}"
+DATA_PATH="${DATA_PATH_ROOT}/${EXPERIMENT_NAME}/${MACHINE}/$(date +'%Y%m%d-%H%M%S')"
 mkdir -p "${DATA_PATH}"
 
 
@@ -86,6 +87,9 @@ else
 
   # Move only *-*.txt files from subdirectories to the top-level directory
   find "${DATASET_PATH}" -mindepth 2 -type f -name "*-*.txt" -exec mv {} "${DATASET_PATH}/" \;
+
+  # Remove that redundant yaml file if present
+  find "${DATASET_PATH}" -mindepth 2 -type f -name "*.y*ml" -exec rm {} \;
 
   # Remove empty subdirectories
   find "${DATASET_PATH}" -mindepth 1 -type d -empty -delete
@@ -137,3 +141,7 @@ onmt_train -config "${CONFIG_FILE}" 2>&1 | \
 #  grep -Ev "Weighted corpora loaded so far|corpus_1:" | \
 #  grep -Ev "FutureWarning|def (forward|backward)" | \
 #  tee "${RUN_PATH}/train.log"
+
+# Get my IP
+#MY_IP=$(hostname -I | cut -d' ' -f1)  # not working
+#echo "ssh ubuntu@$MY_IP 'find ${DATA_PATH_ROOT} -type f -mmin +0.5 -printf \"%P\n\"' | rsync --verbose -av --progress --update --files-from=- ubuntu@$MY_IP:\"${DATA_PATH_ROOT}\" \$HOME/repos/nmr-to-structure-lite/results/;"
