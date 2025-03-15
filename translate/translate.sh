@@ -48,12 +48,12 @@ mkdir -p "${WORK_DATA_PATH}"
 WORK_TRANSLATION_PATH="${WORK_PATH}/translation"
 mkdir -p "${WORK_TRANSLATION_PATH}"
 
-# Sample DATA_PATH/tgt-val.txt 10000 times
+# Sample DATA_PATH/tgt-test.txt 10000 times
 N=1000 # Number of samples
-WORK_SRC_VAL="${WORK_DATA_PATH}/src-val_n$N.txt"
-WORK_TGT_VAL="${WORK_DATA_PATH}/tgt-val_n$N.txt"
-shuf --random-source=<(yes 42) -n $N "${DATA_PATH}/src-val.txt" > "${WORK_SRC_VAL}"
-shuf --random-source=<(yes 42) -n $N "${DATA_PATH}/tgt-val.txt" > "${WORK_TGT_VAL}"
+WORK_SRC_TST="${WORK_DATA_PATH}/src-test_n$N.txt"
+WORK_TGT_TST="${WORK_DATA_PATH}/tgt-test_n$N.txt"
+shuf --random-source=<(yes 42) -n $N "${DATA_PATH}/src-test.txt" > "${WORK_SRC_TST}"
+shuf --random-source=<(yes 42) -n $N "${DATA_PATH}/tgt-test.txt" > "${WORK_TGT_TST}"
 
 [ ! -z "$2" ] && CHECKPOINT="_$2" || CHECKPOINT="_100000"
 CHECKPOINT=$(find "${RUN_PATH}" -name "model_step_*.pt" | grep "${CHECKPOINT}.pt" | sort -V | tail -n 1)
@@ -65,7 +65,7 @@ echo "Using checkpoint: ${CHECKPOINT_NAME}"
 # Translate
 NBEST=10
 BEAM_SIZE=100
-OUTPUT_FILE_NAME="$(basename ${WORK_TGT_VAL})__${CHECKPOINT_NAME}__n_best=${NBEST}__beam_size=${BEAM_SIZE}.txt"
+OUTPUT_FILE_NAME="$(basename ${WORK_TGT_TST})__${CHECKPOINT_NAME}__n_best=${NBEST}__beam_size=${BEAM_SIZE}.txt"
 OUTPUT_FILE="${WORK_TRANSLATION_PATH}/${OUTPUT_FILE_NAME}"
 
 LOG_FILE="${OUTPUT_FILE}.log"
@@ -79,7 +79,7 @@ fi
 
 date "+%Y-%m-%d %H:%M:%S" > "${LOG_FILE}"
 echo "Checkpoint: ${CHECKPOINT#${RESULTS_PATH}/}" >> "${LOG_FILE}"
-echo "Source: ${WORK_SRC_VAL#${THIS_PATH}/}" >> "${LOG_FILE}"
+echo "Source: ${WORK_SRC_TST#${THIS_PATH}/}" >> "${LOG_FILE}"
 echo "Output: ${OUTPUT_FILE#${THIS_PATH}/}" >> "${LOG_FILE}"
 echo "n_best=${NBEST}" >> "${LOG_FILE}"
 echo "beam_size=${BEAM_SIZE}" >> "${LOG_FILE}"
@@ -89,7 +89,7 @@ echo "Log file: ${LOG_FILE#${WORK_TRANSLATION_PATH}/}"
 
 onmt_translate 2>&1 \
   --model "${CHECKPOINT}" \
-  --src "${WORK_SRC_VAL}" \
+  --src "${WORK_SRC_TST}" \
   --output "${OUTPUT_FILE}" \
   --n_best $NBEST \
   --beam_size $BEAM_SIZE \
