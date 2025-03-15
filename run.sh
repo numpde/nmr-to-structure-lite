@@ -36,20 +36,22 @@ if [ "$(hostname)" == "fw" ]; then
 
   CONDA="${HOME}/Programs/miniconda3"
 
-  DATA_PATH="${HOME}/tmp/${PRJ_NAME}/${EXPERIMENT_NAME}"
-  mkdir -p ${DATA_PATH}
-
-# If hostname starts with "150-136-"
+  DATA_PATH="${HOME}/tmp"
+  MACHINE="fw"
+# If hostname starts with "150-136-" (Lambda)
 elif [[ "$(hostname)" == 150-136-* ]]; then
   sudo apt install libarchive-tools
 
   CONDA="${HOME}/fs/miniconda"
 
-  DATA_PATH="${HOME}/fs/tmp/${PRJ_NAME}/${EXPERIMENT_NAME}"
-  mkdir -p ${DATA_PATH}
+  DATA_PATH="${HOME}/fs/tmp"
+  MACHINE="lambda"
 else
   log_error_and_exit "Unknown host: $(hostname)"
 fi
+
+DATA_PATH="${DATA_PATH}/${PRJ_NAME}/${EXPERIMENT_NAME}/${MACHINE}/$(date +'%Y%m%d-%H%M%S')"
+mkdir -p ${DATA_PATH}
 
 
 ## PART A: Setup the python environment
