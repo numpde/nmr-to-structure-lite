@@ -1,0 +1,213 @@
+[2025-03-15 12:37:22,752 INFO] Missing transforms field for corpus_1 data, set to default: [].
+[2025-03-15 12:37:22,752 WARNING] Corpus corpus_1's weight should be given. We default it to 1 for you.
+[2025-03-15 12:37:22,752 INFO] Missing transforms field for valid data, set to default: [].
+[2025-03-15 12:37:22,752 INFO] Parsed 2 corpora from -data.
+[2025-03-15 12:37:22,752 INFO] Get special vocabs from Transforms: {'src': [], 'tgt': []}.
+[2025-03-15 12:37:22,757 INFO] The first 10 tokens of the vocabs are:['<unk>', '<blank>', '<s>', '</s>', '|', 'J', '1H', '2H', 'm', 's']
+[2025-03-15 12:37:22,757 INFO] The decoder start token is: <s>
+[2025-03-15 12:37:22,757 INFO] Building model...
+[2025-03-15 12:37:23,204 INFO] Switching model to float32 for amp/apex_amp
+[2025-03-15 12:37:23,204 INFO] Non quantized layer compute is fp32
+[2025-03-15 12:37:23,322 INFO] NMTModel(
+  (encoder): TransformerEncoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(2008, 512, padding_idx=1)
+        )
+        (pe): PositionalEncoding()
+      )
+      (dropout): Dropout(p=0.3, inplace=False)
+    )
+    (transformer): ModuleList(
+      (0-3): 4 x TransformerEncoderLayer(
+        (self_attn): MultiHeadedAttention(
+          (linear_keys): Linear(in_features=512, out_features=512, bias=False)
+          (linear_values): Linear(in_features=512, out_features=512, bias=False)
+          (linear_query): Linear(in_features=512, out_features=512, bias=False)
+          (softmax): Softmax(dim=-1)
+          (dropout): Dropout(p=0.2, inplace=False)
+          (final_linear): Linear(in_features=512, out_features=512, bias=False)
+        )
+        (feed_forward): PositionwiseFeedForward(
+          (w_1): Linear(in_features=512, out_features=2048, bias=False)
+          (w_2): Linear(in_features=2048, out_features=512, bias=False)
+          (layer_norm): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+          (dropout_1): Dropout(p=0.3, inplace=False)
+          (dropout_2): Dropout(p=0.3, inplace=False)
+        )
+        (layer_norm): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+        (dropout): Dropout(p=0.3, inplace=False)
+      )
+    )
+    (layer_norm): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+  )
+  (decoder): TransformerDecoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(56, 512, padding_idx=1)
+        )
+        (pe): PositionalEncoding()
+      )
+      (dropout): Dropout(p=0.3, inplace=False)
+    )
+    (layer_norm): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+    (transformer_layers): ModuleList(
+      (0-3): 4 x TransformerDecoderLayer(
+        (self_attn): MultiHeadedAttention(
+          (linear_keys): Linear(in_features=512, out_features=512, bias=False)
+          (linear_values): Linear(in_features=512, out_features=512, bias=False)
+          (linear_query): Linear(in_features=512, out_features=512, bias=False)
+          (softmax): Softmax(dim=-1)
+          (dropout): Dropout(p=0.2, inplace=False)
+          (final_linear): Linear(in_features=512, out_features=512, bias=False)
+        )
+        (feed_forward): PositionwiseFeedForward(
+          (w_1): Linear(in_features=512, out_features=2048, bias=False)
+          (w_2): Linear(in_features=2048, out_features=512, bias=False)
+          (layer_norm): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+          (dropout_1): Dropout(p=0.3, inplace=False)
+          (dropout_2): Dropout(p=0.3, inplace=False)
+        )
+        (layer_norm_1): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+        (dropout): Dropout(p=0.3, inplace=False)
+        (context_attn): MultiHeadedAttention(
+          (linear_keys): Linear(in_features=512, out_features=512, bias=False)
+          (linear_values): Linear(in_features=512, out_features=512, bias=False)
+          (linear_query): Linear(in_features=512, out_features=512, bias=False)
+          (softmax): Softmax(dim=-1)
+          (dropout): Dropout(p=0.2, inplace=False)
+          (final_linear): Linear(in_features=512, out_features=512, bias=False)
+        )
+        (layer_norm_2): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+      )
+    )
+  )
+  (generator): Linear(in_features=512, out_features=56, bias=True)
+)
+[2025-03-15 12:37:23,323 INFO] encoder: 13620224
+[2025-03-15 12:37:23,323 INFO] decoder: 16847928
+[2025-03-15 12:37:23,323 INFO] * number of parameters: 30468152
+[2025-03-15 12:37:23,323 INFO] Trainable parameters = {'torch.float32': 30468152, 'torch.float16': 0, 'torch.uint8': 0, 'torch.int8': 0}
+[2025-03-15 12:37:23,324 INFO] Non trainable parameters = {'torch.float32': 0, 'torch.float16': 0, 'torch.uint8': 0, 'torch.int8': 0}
+[2025-03-15 12:37:23,324 INFO]  * src vocab size = 2008
+[2025-03-15 12:37:23,324 INFO]  * tgt vocab size = 56
+[2025-03-15 12:37:23,612 INFO] Starting training on GPU: [0]
+[2025-03-15 12:37:23,612 INFO] Start training loop and validate every 10000 steps...
+[2025-03-15 12:37:23,612 INFO] Scoring with: None
+[2025-03-15 12:37:25,028 INFO] Weighted corpora loaded so far:
+			* corpus_1: 1
+[2025-03-15 12:37:25,029 INFO] Weighted corpora loaded so far:
+			* corpus_1: 1
+[2025-03-15 12:47:29,238 INFO] Step 1000/100000; acc: 49.3; ppl:   8.8; xent: 2.2; lr: 0.00012; sents:  460043; bsz: 4029/2204/58; 53225/29116 tok/s;    606 sec;
+[2025-03-15 12:48:23,267 INFO] Weighted corpora loaded so far:
+			* corpus_1: 2
+[2025-03-15 12:48:23,313 INFO] Weighted corpora loaded so far:
+			* corpus_1: 2
+[2025-03-15 12:57:10,336 INFO] Step 2000/100000; acc: 69.1; ppl:   4.5; xent: 1.5; lr: 0.00025; sents:  461272; bsz: 4029/2206/58; 55473/30372 tok/s;   1187 sec;
+[2025-03-15 12:59:29,759 INFO] Weighted corpora loaded so far:
+			* corpus_1: 3
+[2025-03-15 12:59:29,892 INFO] Weighted corpora loaded so far:
+			* corpus_1: 3
+[2025-03-15 13:06:50,087 INFO] Step 3000/100000; acc: 77.1; ppl:   3.6; xent: 1.3; lr: 0.00037; sents:  459062; bsz: 4027/2205/57; 55569/30423 tok/s;   1766 sec;
+[2025-03-15 13:10:35,614 INFO] Weighted corpora loaded so far:
+			* corpus_1: 4
+[2025-03-15 13:10:36,166 INFO] Weighted corpora loaded so far:
+			* corpus_1: 4
+[2025-03-15 13:16:32,899 INFO] Step 4000/100000; acc: 82.0; ppl:   3.2; xent: 1.2; lr: 0.00049; sents:  460608; bsz: 4032/2202/58; 55339/30224 tok/s;   2349 sec;
+[2025-03-15 13:26:11,761 INFO] Step 5000/100000; acc: 85.1; ppl:   3.0; xent: 1.1; lr: 0.00062; sents:  461113; bsz: 4023/2203/58; 55601/30450 tok/s;   2928 sec;
+[2025-03-15 13:32:21,189 INFO] Weighted corpora loaded so far:
+			* corpus_1: 5
+[2025-03-15 13:32:21,855 INFO] Weighted corpora loaded so far:
+			* corpus_1: 5
+[2025-03-15 13:35:50,641 INFO] Step 6000/100000; acc: 87.2; ppl:   2.8; xent: 1.0; lr: 0.00074; sents:  458885; bsz: 4030/2202/57; 55689/30431 tok/s;   3507 sec;
+[2025-03-15 13:43:26,049 INFO] Weighted corpora loaded so far:
+			* corpus_1: 6
+[2025-03-15 13:43:26,693 INFO] Weighted corpora loaded so far:
+			* corpus_1: 6
+[2025-03-15 13:45:28,853 INFO] Step 7000/100000; acc: 88.7; ppl:   2.7; xent: 1.0; lr: 0.00086; sents:  460360; bsz: 4029/2203/58; 55740/30483 tok/s;   4085 sec;
+[2025-03-15 13:54:29,466 INFO] Weighted corpora loaded so far:
+			* corpus_1: 7
+[2025-03-15 13:54:30,475 INFO] Weighted corpora loaded so far:
+			* corpus_1: 7
+[2025-03-15 13:55:10,899 INFO] Step 8000/100000; acc: 89.8; ppl:   2.6; xent: 1.0; lr: 0.00099; sents:  459944; bsz: 4028/2206/57; 55360/30317 tok/s;   4667 sec;
+[2025-03-15 14:04:45,665 INFO] Step 9000/100000; acc: 90.8; ppl:   2.6; xent: 0.9; lr: 0.00093; sents:  459792; bsz: 4029/2206/57; 56072/30702 tok/s;   5242 sec;
+[2025-03-15 14:14:25,028 INFO] Step 10000/100000; acc: 91.6; ppl:   2.5; xent: 0.9; lr: 0.00088; sents:  460432; bsz: 4028/2209/58; 55617/30496 tok/s;   5821 sec;
+[2025-03-15 14:18:37,191 INFO] valid stats calculation
+                           took: 252.16179847717285 s.
+[2025-03-15 14:18:37,192 INFO] Train perplexity: 3.35017
+[2025-03-15 14:18:37,192 INFO] Train accuracy: 81.0743
+[2025-03-15 14:18:37,192 INFO] Sentences processed: 4.60151e+06
+[2025-03-15 14:18:37,192 INFO] Average bsz: 4028/2205/58
+[2025-03-15 14:18:37,192 INFO] Validation perplexity: 2.49589
+[2025-03-15 14:18:37,192 INFO] Validation accuracy: 92.8436
+[2025-03-15 14:18:37,195 INFO] Saving checkpoint /home/ubuntu/tmp/nmr-to-structure-lite/002_big_explicit-h/lambda/20250315-123716/run/model_step_10000.pt
+[2025-03-15 14:20:24,477 INFO] Weighted corpora loaded so far:
+			* corpus_1: 8
+[2025-03-15 14:20:25,622 INFO] Weighted corpora loaded so far:
+			* corpus_1: 8
+[2025-03-15 14:28:16,090 INFO] Step 11000/100000; acc: 92.3; ppl:   2.5; xent: 0.9; lr: 0.00084; sents:  459599; bsz: 4028/2204/57; 38774/21216 tok/s;   6652 sec;
+[2025-03-15 14:31:27,943 INFO] Weighted corpora loaded so far:
+			* corpus_1: 9
+[2025-03-15 14:31:29,106 INFO] Weighted corpora loaded so far:
+			* corpus_1: 9
+[2025-03-15 14:37:54,504 INFO] Step 12000/100000; acc: 92.8; ppl:   2.4; xent: 0.9; lr: 0.00081; sents:  463178; bsz: 4031/2206/58; 55758/30507 tok/s;   7231 sec;
+[2025-03-15 14:42:33,035 INFO] Weighted corpora loaded so far:
+			* corpus_1: 10
+[2025-03-15 14:42:34,735 INFO] Weighted corpora loaded so far:
+			* corpus_1: 10
+[2025-03-15 14:47:34,600 INFO] Step 13000/100000; acc: 93.1; ppl:   2.4; xent: 0.9; lr: 0.00078; sents:  455566; bsz: 4029/2189/57; 55558/30189 tok/s;   7811 sec;
+[2025-03-15 14:53:39,371 INFO] Weighted corpora loaded so far:
+			* corpus_1: 11
+[2025-03-15 14:53:40,550 INFO] Weighted corpora loaded so far:
+			* corpus_1: 11
+[2025-03-15 14:57:18,332 INFO] Step 14000/100000; acc: 93.5; ppl:   2.4; xent: 0.9; lr: 0.00075; sents:  462316; bsz: 4026/2219/58; 55172/30410 tok/s;   8395 sec;
+[2025-03-15 15:07:00,225 INFO] Step 15000/100000; acc: 93.8; ppl:   2.4; xent: 0.9; lr: 0.00072; sents:  460706; bsz: 4029/2200/58; 55386/30242 tok/s;   8977 sec;
+[2025-03-15 15:15:26,749 INFO] Weighted corpora loaded so far:
+			* corpus_1: 12
+[2025-03-15 15:15:31,520 INFO] Weighted corpora loaded so far:
+			* corpus_1: 12
+[2025-03-15 15:16:42,219 INFO] Step 16000/100000; acc: 94.1; ppl:   2.4; xent: 0.9; lr: 0.00070; sents:  458619; bsz: 4029/2199/57; 55383/30227 tok/s;   9559 sec;
+[2025-03-15 15:26:16,231 INFO] Step 17000/100000; acc: 94.3; ppl:   2.4; xent: 0.9; lr: 0.00068; sents:  460313; bsz: 4029/2201/58; 56149/30672 tok/s;  10133 sec;
+[2025-03-15 15:26:35,002 INFO] Weighted corpora loaded so far:
+			* corpus_1: 13
+[2025-03-15 15:26:36,724 INFO] Weighted corpora loaded so far:
+			* corpus_1: 13
+[2025-03-15 15:35:55,184 INFO] Step 18000/100000; acc: 94.5; ppl:   2.3; xent: 0.9; lr: 0.00066; sents:  459394; bsz: 4029/2209/57; 55667/30530 tok/s;  10712 sec;
+[2025-03-15 15:37:35,755 INFO] Weighted corpora loaded so far:
+			* corpus_1: 14
+[2025-03-15 15:37:42,143 INFO] Weighted corpora loaded so far:
+			* corpus_1: 14
+[2025-03-15 15:45:38,301 INFO] Step 19000/100000; acc: 94.7; ppl:   2.3; xent: 0.8; lr: 0.00064; sents:  460444; bsz: 4026/2207/58; 55232/30284 tok/s;  11295 sec;
+[2025-03-15 15:55:20,838 INFO] Step 20000/100000; acc: 94.9; ppl:   2.3; xent: 0.8; lr: 0.00062; sents:  461317; bsz: 4033/2196/58; 55386/30162 tok/s;  11877 sec;
+[2025-03-15 15:59:31,743 INFO] valid stats calculation
+                           took: 250.9048707485199 s.
+[2025-03-15 15:59:31,744 INFO] Train perplexity: 2.8253
+[2025-03-15 15:59:31,744 INFO] Train accuracy: 87.443
+[2025-03-15 15:59:31,744 INFO] Sentences processed: 9.20296e+06
+[2025-03-15 15:59:31,744 INFO] Average bsz: 4029/2204/58
+[2025-03-15 15:59:31,745 INFO] Validation perplexity: 2.359
+[2025-03-15 15:59:31,745 INFO] Validation accuracy: 95.471
+[2025-03-15 15:59:31,747 INFO] Saving checkpoint /home/ubuntu/tmp/nmr-to-structure-lite/002_big_explicit-h/lambda/20250315-123716/run/model_step_20000.pt
+[2025-03-15 16:03:36,530 INFO] Weighted corpora loaded so far:
+			* corpus_1: 15
+[2025-03-15 16:03:38,883 INFO] Weighted corpora loaded so far:
+			* corpus_1: 15
+[2025-03-15 16:09:08,917 INFO] Step 21000/100000; acc: 95.0; ppl:   2.3; xent: 0.8; lr: 0.00061; sents:  459882; bsz: 4026/2212/57; 38890/21366 tok/s;  12705 sec;
+[2025-03-15 16:14:38,792 INFO] Weighted corpora loaded so far:
+			* corpus_1: 16
+[2025-03-15 16:14:44,158 INFO] Weighted corpora loaded so far:
+			* corpus_1: 16
+[2025-03-15 16:18:50,271 INFO] Step 22000/100000; acc: 95.2; ppl:   2.3; xent: 0.8; lr: 0.00060; sents:  460451; bsz: 4030/2200/58; 55451/30274 tok/s;  13287 sec;
+[2025-03-15 16:25:49,109 INFO] Weighted corpora loaded so far:
+			* corpus_1: 17
+[2025-03-15 16:25:49,195 INFO] Weighted corpora loaded so far:
+			* corpus_1: 17
+[2025-03-15 16:28:32,256 INFO] Step 23000/100000; acc: 95.3; ppl:   2.3; xent: 0.8; lr: 0.00058; sents:  460481; bsz: 4029/2203/58; 55387/30280 tok/s;  13869 sec;
+[2025-03-15 16:38:15,000 INFO] Step 24000/100000; acc: 95.4; ppl:   2.3; xent: 0.8; lr: 0.00057; sents:  458376; bsz: 4027/2202/57; 55284/30229 tok/s;  14451 sec;
+[2025-03-15 16:47:37,749 INFO] Weighted corpora loaded so far:
+			* corpus_1: 18
+[2025-03-15 16:47:40,076 INFO] Weighted corpora loaded so far:
+			* corpus_1: 18
+[2025-03-15 16:47:49,477 INFO] Step 25000/100000; acc: 95.5; ppl:   2.3; xent: 0.8; lr: 0.00056; sents:  461343; bsz: 4029/2207/58; 56104/30731 tok/s;  15026 sec;
