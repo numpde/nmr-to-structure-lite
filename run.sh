@@ -42,7 +42,7 @@ elif [[ "$(hostname)" == "lambda" ]]; then
 
   CONDA="${HOME}/miniconda"
 
-  DATA_PATH="${HOME}/fs/tmp"
+  DATA_PATH="${HOME}/tmp"
   MACHINE="lambda"
 else
   log_error_and_exit "Unknown host: $(hostname)"
@@ -131,6 +131,9 @@ fi
 #onmt_train -config "${CONFIG_FILE}" 2>&1
 
 onmt_train -config "${CONFIG_FILE}" 2>&1 | \
-  grep -Ev "Weighted corpora loaded so far|corpus_1:" | \
-  grep -Ev "FutureWarning|def (forward|backward)" | \
   tee "${RUN_PATH}/train.log"
+
+#onmt_train -config "${CONFIG_FILE}" 2>&1 | \
+#  grep -Ev "Weighted corpora loaded so far|corpus_1:" | \
+#  grep -Ev "FutureWarning|def (forward|backward)" | \
+#  tee "${RUN_PATH}/train.log"
