@@ -26,8 +26,6 @@ for VAR in DATASET_URL; do
   [ -z "${!VAR}" ] && log_error_and_exit "Variable ${VAR} is not set"
 done
 
-ROOT_PATH=$(realpath $0)
-ROOT_DIR=$(dirname $ROOT_PATH)
 
 # Depending on the host, select target path
 # E.g., on host 'fw':
@@ -38,6 +36,7 @@ if [ "$(hostname)" == "fw" ]; then
 
   DATA_PATH="${HOME}/tmp"
   MACHINE="fw"
+
 # If hostname starts with "150-136-" (Lambda)
 elif [[ "$(hostname)" == 150-136-* ]]; then
   sudo apt install libarchive-tools
@@ -51,7 +50,7 @@ else
 fi
 
 DATA_PATH="${DATA_PATH}/${PRJ_NAME}/${EXPERIMENT_NAME}/${MACHINE}/$(date +'%Y%m%d-%H%M%S')"
-mkdir -p ${DATA_PATH}
+mkdir -p "${DATA_PATH}"
 
 
 ## PART A: Setup the python environment
