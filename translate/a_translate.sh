@@ -52,8 +52,10 @@ mkdir -p "${WORK_TRANSLATION_PATH}"
 N=1000 # Number of samples
 WORK_SRC_TST="${WORK_DATA_PATH}/src-test_n$N.txt"
 WORK_TGT_TST="${WORK_DATA_PATH}/tgt-test_n$N.txt"
-shuf --random-source=<(yes 42) -n $N "${DATA_PATH}/src-test.txt" > "${WORK_SRC_TST}"
-shuf --random-source=<(yes 42) -n $N "${DATA_PATH}/tgt-test.txt" > "${WORK_TGT_TST}"
+paste "${DATA_PATH}/src-test.txt" "${DATA_PATH}/tgt-test.txt" | \
+  shuf --random-source=<(yes 42) -n "$N" | \
+  tee >(cut -f1 > "${WORK_SRC_TST}") >(cut -f2 > "${WORK_TGT_TST}") > /dev/null
+
 
 [ ! -z "$2" ] && CHECKPOINT="_$2" || CHECKPOINT="_100000"
 CHECKPOINT=$(find "${RUN_PATH}" -name "model_step_*.pt" | grep "${CHECKPOINT}.pt" | sort -V | tail -n 1)
