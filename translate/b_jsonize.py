@@ -97,7 +97,7 @@ def save_json(json_obj: Any, dest_file: Path):
 
 
 if __name__ == "__main__":
-    translations: list[Path] = list(Path(__file__).parent.glob("**/translation/*.log"))
+    translations: list[Path] = list(Path(__file__).parent.glob("work/**/translation/*.log"))
 
     for file in translations:
         # Assume main() returns a JSON-serializable object (e.g., a list or dict)
