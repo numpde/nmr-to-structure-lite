@@ -85,7 +85,6 @@
     const { useState, useEffect, useRef } = React;
 
     // Fallback data with simple, short SMILES.
-    // (Second hypothesis in the first entry is intentionally invalid.)
     const fallbackData = [
       {
         sent: "C 6 H 6",
@@ -212,10 +211,12 @@
         }
       };
 
+      // New effect: if container height is less than viewport and more rows are available, load next row.
       useEffect(() => {
-        if (molecules.length > 0) {
-          // Redraw molecules when page increases.
-          // (Our MoleculeCard components handle their own drawing.)
+        if (containerRef.current && molecules.length > 0) {
+          if (containerRef.current.scrollHeight < window.innerHeight && page * 5 < molecules.length) {
+            setPage(prev => prev + 1);
+          }
         }
       }, [molecules, page]);
 
@@ -243,7 +244,7 @@
                   score={hyp.score}
                   isPrediction={true}
                   openExternalViewer={openExternalViewer}
-                  correct={ (hyp.pred || "").replace(/\s+/g, "") === (mol.ref || "").replace(/\s+/g, "") }
+                  correct={((hyp.pred || "").replace(/\s+/g, "") === (mol.ref || "").replace(/\s+/g, ""))}
                 />
               ))}
             </div>
