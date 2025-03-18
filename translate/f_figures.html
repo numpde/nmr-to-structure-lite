@@ -6,6 +6,23 @@
   <title>Molecule Viewer</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    .top-bar {
+      background: #f2f2f2;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .top-bar input {
+      width: 80%;
+      padding: 5px;
+      font-size: 14px;
+    }
+    .top-bar button {
+      padding: 5px 10px;
+      font-size: 14px;
+    }
     .container { width: 90%; margin: auto; padding: 20px; }
     .molecule-row {
       display: flex;
@@ -47,6 +64,10 @@
   </style>
 </head>
 <body>
+  <div class="top-bar">
+    <input id="dataUrlInput" type="text" defaultValue="https://github.com/numpde/nmr-to-structure-lite/raw/92a3e601c1a4e3e5c67b2aa694a2f7803fc2ffd7/translate/work/001_big/lambda/20250309-220000/translation/tgt-test_n1000.txt__model_step_250000__n_best=10__beam_size=100.txt.json" />
+    <button id="loadButton">Load Data</button>
+  </div>
   <div id="root"></div>
 
   <!-- Dependencies -->
@@ -58,10 +79,8 @@
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
-    // Data source URL (from GitHub)
-    const DATA_URL = "https://github.com/numpde/nmr-to-structure-lite/raw/92a3e601c1a4e3e5c67b2aa694a2f7803fc2ffd7/translate/work/001_big/lambda/20250309-220000/translation/tgt-test_n1000.txt__model_step_250000__n_best=10__beam_size=100.txt.json";
-
-    // Fallback data with short SMILES (example)
+    // Fallback data with simple, short SMILES.
+    // (Second hyp in first entry is intentionally invalid.)
     const fallbackData = [
       {
         sent: "C 6 H 6",
@@ -81,7 +100,7 @@
       }
     ];
 
-    // Helper: If SMILES parsing fails, clear canvas and show an error message.
+    // Helper: Draw an error message on a canvas.
     const drawError = (canvas, msg) => {
       const ctx = canvas.getContext("2d");
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -91,7 +110,7 @@
       ctx.fillText(msg, canvas.width / 2, canvas.height / 2);
     };
 
-    // MoleculeCard component: shows an optional header, score (for predictions), image, and SMILES text.
+    // MoleculeCard component: displays an optional header, score (for predictions), image, and SMILES.
     const MoleculeCard = ({ smiles, score, isPrediction, header, canvasId, openExternalViewer }) => (
       <div className="molecule-card" onClick={() => openExternalViewer(smiles)}>
         {header && <div className="header-text">{header}</div>}
@@ -101,7 +120,7 @@
       </div>
     );
 
-    function MoleculeViewer() {
+    function MoleculeViewer({ dataUrl }) {
       const [molecules, setMolecules] = useState([]);
       const [page, setPage] = useState(1);
       const containerRef = useRef(null);
@@ -110,19 +129,20 @@
         loadMolecules();
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
-      }, []);
+      }, [dataUrl]);
 
-      // Attempt to load data from the GitHub URL; use fallback if that fails.
+      // Load molecules from provided data URL or fallback.
       const loadMolecules = async () => {
         try {
-          const response = await fetch(DATA_URL);
+          const response = await fetch(dataUrl);
           if (!response.ok) throw new Error("Failed to load");
           const data = await response.json();
-          // Initially load the first 10 entries.
           setMolecules(data.slice(0, 10));
+          setPage(1);
         } catch (error) {
           console.warn("Using fallback data:", error);
           setMolecules(fallbackData);
+          setPage(1);
         }
       };
 
@@ -138,7 +158,6 @@
         }
       }, [molecules, page]);
 
-      // Render molecules for visible rows.
       const drawMolecules = () => {
         molecules.slice(0, page * 10).forEach((mol, index) => {
           const refSmiles = mol.ref.replace(/\s+/g, "");
@@ -165,7 +184,7 @@
         }
       };
 
-      // Opens an external viewer (PubChem) in a new tab.
+      // Open PubChem with the SMILES.
       const openExternalViewer = (smiles) => {
         const url = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/${encodeURIComponent(smiles)}/PNG`;
         window.open(url, "_blank");
@@ -199,7 +218,26 @@
       );
     }
 
-    ReactDOM.render(<MoleculeViewer />, document.getElementById("root"));
+    function App() {
+      const [dataUrl, setDataUrl] = useState(
+        "https://github.com/numpde/nmr-to-structure-lite/raw/92a3e601c1a4e3e5c67b2aa694a2f7803fc2ffd7/translate/work/001_big/lambda/20250309-220000/translation/tgt-test_n1000.txt__model_step_250000__n_best=10__beam_size=100.txt.json"
+      );
+
+      return (
+          <MoleculeViewer dataUrl={dataUrl} />
+      );
+    }
+
+    // When the Load Data button is clicked, update the data URL.
+    document.getElementById("loadButton").addEventListener("click", () => {
+      const input = document.getElementById("dataUrlInput");
+      if (input && input.value) {
+        // Re-render the App with the new dataUrl.
+        ReactDOM.render(<MoleculeViewer dataUrl={input.value} />, document.getElementById("root"));
+      }
+    });
+
+    ReactDOM.render(<App />, document.getElementById("root"));
   </script>
 </body>
 </html>
