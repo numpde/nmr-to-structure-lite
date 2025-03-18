@@ -172,7 +172,7 @@ def resim_hypotheses_file(file: Path):
 
 
 def main():
-    translations: list[Path] = list(Path(__file__).parent.glob("**/translation/*.json"))
+    translations: list[Path] = list(Path(__file__).parent.glob("work/**/translation/*.json"))
 
     translations = [
         file
