@@ -65,7 +65,7 @@
 </head>
 <body>
   <div class="top-bar">
-    <input id="dataUrlInput" type="text" defaultValue="https://github.com/numpde/nmr-to-structure-lite/raw/92a3e601c1a4e3e5c67b2aa694a2f7803fc2ffd7/translate/work/001_big/lambda/20250309-220000/translation/tgt-test_n1000.txt__model_step_250000__n_best=10__beam_size=100.txt.json" />
+    <input id="dataUrlInput" type="text" defaultValue="./work/001_big/lambda/20250309-220000/translation/tgt-test_n1000.txt__model_step_250000__n_best=10__beam_size=100.txt.json" />
     <button id="loadButton">Load Data</button>
   </div>
   <div id="root"></div>
@@ -137,7 +137,7 @@
           const response = await fetch(dataUrl);
           if (!response.ok) throw new Error("Failed to load");
           const data = await response.json();
-          setMolecules(data.slice(0, 10));
+          setMolecules(data); // Store full dataset.
           setPage(1);
         } catch (error) {
           console.warn("Using fallback data:", error);
@@ -147,7 +147,7 @@
       };
 
       const handleScroll = () => {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100) {
           setPage(prev => prev + 1);
         }
       };
@@ -220,7 +220,7 @@
 
     function App() {
       const [dataUrl, setDataUrl] = useState(
-        "https://github.com/numpde/nmr-to-structure-lite/raw/92a3e601c1a4e3e5c67b2aa694a2f7803fc2ffd7/translate/work/001_big/lambda/20250309-220000/translation/tgt-test_n1000.txt__model_step_250000__n_best=10__beam_size=100.txt.json"
+        "./work/001_big/lambda/20250309-220000/translation/tgt-test_n1000.txt__model_step_250000__n_best=10__beam_size=100.txt.json"
       );
 
       return (
@@ -232,7 +232,6 @@
     document.getElementById("loadButton").addEventListener("click", () => {
       const input = document.getElementById("dataUrlInput");
       if (input && input.value) {
-        // Re-render the App with the new dataUrl.
         ReactDOM.render(<MoleculeViewer dataUrl={input.value} />, document.getElementById("root"));
       }
     });
