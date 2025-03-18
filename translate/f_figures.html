@@ -14,8 +14,9 @@
       gap: 10px;
       border-bottom: 1px solid #ddd;
     }
+    /* Use flex so that the input grows and fills available space */
     .top-bar input {
-      width: 80%;
+      flex: 1;
       padding: 5px;
       font-size: 14px;
     }
@@ -23,10 +24,11 @@
       padding: 5px 10px;
       font-size: 14px;
     }
+    /* Container spans 90% with 20px padding on left/right */
     .container {
       width: 90%;
       margin: auto;
-      padding: 20px 20px; /* ensure left/right padding */
+      padding: 20px;
     }
     .molecule-row {
       display: flex;
@@ -34,7 +36,7 @@
       gap: 20px;
       margin-bottom: 20px;
       padding: 10px;
-      padding-right: 20px; /* add gap on right */
+      padding-right: 20px; /* ensures a gap on the right edge */
       border-bottom: 1px solid #ddd;
       align-items: flex-start;
     }
@@ -45,7 +47,8 @@
       width: 150px;
       cursor: pointer;
     }
-    /* Render each canvas at intrinsic 300x300 for high resolution, but displayed at 150x150 */
+    /* Render each canvas with an intrinsic size of 300x300 for high resolution,
+       but displayed at 150x150 */
     .molecule-canvas {
       width: 150px;
       height: 150px;
@@ -69,8 +72,8 @@
 </head>
 <body>
   <div class="top-bar">
-    <!-- Using value attribute so the default URL appears on load -->
-    <input id="dataUrlInput" type="text" value="./work/001_big/lambda/20250309-220000/translation/tgt-test_n1000.txt__model_step_250000__n_best=10__beam_size=100.txt.json" />
+    <!-- Use defaultValue so the default URL shows up and is editable -->
+    <input id="dataUrlInput" type="text" defaultValue="./work/001_big/lambda/20250309-220000/translation/tgt-test_n1000.txt__model_step_250000__n_best=10__beam_size=100.txt.json" />
     <button id="loadButton">Load Data</button>
   </div>
   <div id="root"></div>
@@ -84,7 +87,7 @@
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
-    // Fallback data with simple, short SMILES.
+    // Fallback data with simple SMILES.
     const fallbackData = [
       {
         sent: "C 6 H 6",
@@ -195,7 +198,7 @@
           const response = await fetch(dataUrl);
           if (!response.ok) throw new Error("Failed to load");
           const data = await response.json();
-          setMolecules(data); // Store full dataset.
+          setMolecules(data); // store full dataset.
           setPage(1);
         } catch (error) {
           console.warn("Using fallback data:", error);
@@ -211,7 +214,7 @@
         }
       };
 
-      // New effect: if container height is less than viewport and more rows are available, load next row.
+      // If the container's height is less than the viewport, load additional rows.
       useEffect(() => {
         if (containerRef.current && molecules.length > 0) {
           if (containerRef.current.scrollHeight < window.innerHeight && page * 5 < molecules.length) {
