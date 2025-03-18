@@ -45,12 +45,11 @@
       width: 150px;
       cursor: pointer;
     }
-    /* We'll render each canvas at an intrinsic 300x300 for higher resolution but display it at 150x150 */
+    /* Render each canvas at intrinsic 300x300 for high resolution, but displayed at 150x150 */
     .molecule-canvas {
       width: 150px;
       height: 150px;
     }
-    /* Both header and score now use the same font settings */
     .score,
     .header-text {
       font-size: 12px;
@@ -116,9 +115,7 @@
       ctx.fillText(msg, canvas.width / 2, canvas.height / 2);
     };
 
-    // MoleculeCard component renders its own canvas.
-    // While the drawing is in progress, an overlay shows "Loading...".
-    // If "correct" is true, a thicker green border is used.
+    // MoleculeCard component renders its own canvas and shows a "Loading..." overlay.
     const MoleculeCard = ({ smiles, score, isPrediction, header, correct, openExternalViewer }) => {
       const canvasRef = useRef(null);
       const [loaded, setLoaded] = useState(false);
@@ -193,7 +190,7 @@
         return () => window.removeEventListener("scroll", handleScroll);
       }, [dataUrl]);
 
-      // Load molecules from the provided data URL (or fallback).
+      // Load molecules from provided data URL or fallback.
       const loadMolecules = async () => {
         try {
           const response = await fetch(dataUrl);
@@ -215,6 +212,13 @@
         }
       };
 
+      useEffect(() => {
+        if (molecules.length > 0) {
+          // Redraw molecules when page increases.
+          // (Our MoleculeCard components handle their own drawing.)
+        }
+      }, [molecules, page]);
+
       // Open PubChem with the given SMILES.
       const openExternalViewer = (smiles) => {
         const url = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/${encodeURIComponent(smiles)}/PNG`;
@@ -227,19 +231,19 @@
             <div key={index} className="molecule-row">
               {/* Reference card with header */}
               <MoleculeCard
-                smiles={mol.ref.replace(/\s+/g, "")}
+                smiles={(mol.ref || "").replace(/\s+/g, "")}
                 header="Reference"
                 openExternalViewer={openExternalViewer}
               />
               {/* Prediction cards: only first 4 */}
-              {mol.hyps.slice(0, 4).map((hyp, hIdx) => (
+              {mol.hyps && mol.hyps.slice(0, 4).map((hyp, hIdx) => (
                 <MoleculeCard
                   key={hIdx}
-                  smiles={hyp.pred.replace(/\s+/g, "")}
+                  smiles={(hyp.pred || "").replace(/\s+/g, "")}
                   score={hyp.score}
                   isPrediction={true}
                   openExternalViewer={openExternalViewer}
-                  correct={hyp.pred.replace(/\s+/g, "") === mol.ref.replace(/\s+/g, "")}
+                  correct={ (hyp.pred || "").replace(/\s+/g, "") === (mol.ref || "").replace(/\s+/g, "") }
                 />
               ))}
             </div>
