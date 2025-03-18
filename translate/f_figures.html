@@ -39,20 +39,19 @@
       border-bottom: 1px solid #ddd;
     }
     .molecule-row::after {
-      content: "\00a0"; /* non-breaking space */
+      content: "\00a0";
       display: block;
       width: 20px;
       flex-shrink: 0;
     }
     .blank-col {
-      width: 20px; /* fixed blank column on left/right */
+      width: 20px;
       flex-shrink: 0;
     }
     .divider {
       width: 5px;
       background: #e0e0e0;
       margin: 0 10px;
-      /* Ensure it stretches to the full height of the tile */
       height: 200px;
       align-self: center;
       flex-shrink: 0;
@@ -85,12 +84,7 @@
   </style>
 </head>
 <body>
-  <div class="top-bar">
-    <!-- Use defaultValue so the default URL appears on load -->
-    <input id="dataUrlInput" type="text" defaultValue="./work/001_big/lambda/20250309-220000/translation/tgt-test_n1000.txt__model_step_250000__n_best=10__beam_size=100.txt.json" />
-    <button id="loadButton">Load Data</button>
-  </div>
-  <div id="root"></div>
+  <div id="app"></div>
 
   <!-- Dependencies -->
   <script src="https://cdn.jsdelivr.net/npm/smiles-drawer@2.0.1/dist/smiles-drawer.min.js"></script>
@@ -206,13 +200,12 @@
         return () => window.removeEventListener("scroll", handleScroll);
       }, [dataUrl]);
 
-      // Load molecules from provided data URL or fallback.
       const loadMolecules = async () => {
         try {
           const response = await fetch(dataUrl);
           if (!response.ok) throw new Error("Failed to load");
           const data = await response.json();
-          setMolecules(data); // store full dataset.
+          setMolecules(data);
           setPage(1);
         } catch (error) {
           console.warn("Using fallback data:", error);
@@ -221,14 +214,12 @@
         }
       };
 
-      // Load 5 rows at a time.
       const handleScroll = () => {
         if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100) {
           setPage(prev => prev + 1);
         }
       };
 
-      // New effect: if container height is less than viewport and more rows exist, load additional rows.
       useEffect(() => {
         if (containerRef.current && molecules.length > 0) {
           if (containerRef.current.scrollHeight < window.innerHeight && page * 5 < molecules.length) {
@@ -237,7 +228,6 @@
         }
       }, [molecules, page]);
 
-      // Open PubChem with the given SMILES.
       const openExternalViewer = (smiles) => {
         const url = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/${encodeURIComponent(smiles)}/PNG`;
         window.open(url, "_blank");
@@ -248,14 +238,12 @@
           {molecules.slice(0, page * 5).map((mol, index) => (
             <div key={index} className="molecule-row">
               <div className="blank-col"></div>
-              {/* Reference card with header */}
               <MoleculeCard
                 smiles={(mol.ref || "").replace(/\s+/g, "")}
                 header="Reference"
                 openExternalViewer={openExternalViewer}
               />
               <div className="divider"></div>
-              {/* Prediction cards: only first 4 */}
               {mol.hyps && mol.hyps.slice(0, 4).map((hyp, hIdx) => (
                 <MoleculeCard
                   key={hIdx}
@@ -276,21 +264,24 @@
     function App() {
       const defaultUrl = "./work/001_big/lambda/20250309-220000/translation/tgt-test_n1000.txt__model_step_250000__n_best=10__beam_size=100.txt.json";
       const [dataUrl, setDataUrl] = useState(defaultUrl);
+      const [pendingUrl, setPendingUrl] = useState(defaultUrl);
 
       return (
-        <MoleculeViewer dataUrl={dataUrl} />
+        <React.Fragment>
+          <div className="top-bar">
+            <input
+              type="text"
+              value={pendingUrl}
+              onChange={(e) => setPendingUrl(e.target.value)}
+            />
+            <button onClick={() => setDataUrl(pendingUrl)}>Load Data</button>
+          </div>
+          <MoleculeViewer dataUrl={dataUrl} />
+        </React.Fragment>
       );
     }
 
-    // When the Load Data button is clicked, update the data URL.
-    document.getElementById("loadButton").addEventListener("click", () => {
-      const input = document.getElementById("dataUrlInput");
-      if (input && input.value) {
-        ReactDOM.render(<MoleculeViewer dataUrl={input.value} />, document.getElementById("root"));
-      }
-    });
-
-    ReactDOM.render(<App />, document.getElementById("root"));
+    ReactDOM.render(<App />, document.getElementById("app"));
   </script>
 </body>
 </html>
