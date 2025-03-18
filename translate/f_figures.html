@@ -14,7 +14,6 @@
       gap: 10px;
       border-bottom: 1px solid #ddd;
     }
-    /* Use flex so that the input grows and fills available space */
     .top-bar input {
       flex: 1;
       padding: 5px;
@@ -24,34 +23,45 @@
       padding: 5px 10px;
       font-size: 14px;
     }
-    /* Container spans 90% with 20px padding on left/right */
     .container {
       width: 90%;
       margin: auto;
       padding: 20px;
+      box-sizing: border-box;
     }
+    /* Each molecule row now includes blank columns on the left and right, and a divider between ref and hyps */
     .molecule-row {
       display: flex;
-      flex-direction: row;
+      align-items: flex-start;
       gap: 20px;
       margin-bottom: 20px;
       padding: 10px;
-      padding-right: 20px; /* ensures a gap on the right edge */
       border-bottom: 1px solid #ddd;
-      align-items: flex-start;
+    }
+    .blank-col {
+      width: 20px; /* fixed blank column on left/right */
+      flex-shrink: 0;
+    }
+    .divider {
+      width: 5px;
+      background: #e0e0e0;
+      margin: 0 10px;
+      /* Ensure it stretches to the full height of the tile */
+      height: 200px;
+      align-self: center;
+      flex-shrink: 0;
     }
     .molecule-card {
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 150px;
+      width: 200px;
       cursor: pointer;
     }
-    /* Render each canvas with an intrinsic size of 300x300 for high resolution,
-       but displayed at 150x150 */
+    /* Display size: 200x200, Intrinsic: 400x400 for high DPI */
     .molecule-canvas {
-      width: 150px;
-      height: 150px;
+      width: 200px;
+      height: 200px;
     }
     .score,
     .header-text {
@@ -59,9 +69,7 @@
       color: gray;
       margin-bottom: 5px;
     }
-    .header-text {
-      font-weight: normal;
-    }
+    .header-text { font-weight: normal; }
     .smiles-text {
       font-size: 12px;
       margin-top: 5px;
@@ -72,7 +80,7 @@
 </head>
 <body>
   <div class="top-bar">
-    <!-- Use defaultValue so the default URL shows up and is editable -->
+    <!-- Use defaultValue so the default URL appears on load -->
     <input id="dataUrlInput" type="text" defaultValue="./work/001_big/lambda/20250309-220000/translation/tgt-test_n1000.txt__model_step_250000__n_best=10__beam_size=100.txt.json" />
     <button id="loadButton">Load Data</button>
   </div>
@@ -117,7 +125,7 @@
       ctx.fillText(msg, canvas.width / 2, canvas.height / 2);
     };
 
-    // MoleculeCard component renders its own canvas and shows a "Loading..." overlay.
+    // MoleculeCard component renders its own canvas with a "Loading..." overlay.
     const MoleculeCard = ({ smiles, score, isPrediction, header, correct, openExternalViewer }) => {
       const canvasRef = useRef(null);
       const [loaded, setLoaded] = useState(false);
@@ -126,7 +134,7 @@
         setLoaded(false);
         const canvas = canvasRef.current;
         if (canvas) {
-          const drawer = new SmilesDrawer.Drawer({ width: 300, height: 300 });
+          const drawer = new SmilesDrawer.Drawer({ width: 400, height: 400 });
           SmilesDrawer.parse(
             smiles,
             (tree) => {
@@ -146,16 +154,16 @@
         <div className="molecule-card" onClick={() => openExternalViewer(smiles)}>
           {header && <div className="header-text">{header}</div>}
           {isPrediction && !header && <div className="score">{score}</div>}
-          <div style={{ position: "relative", width: "150px", height: "150px" }}>
+          <div style={{ position: "relative", width: "200px", height: "200px" }}>
             <canvas
               ref={canvasRef}
               className="molecule-canvas"
-              width="300" height="300"
+              width="400" height="400"
               style={{
                 border: correct ? "4px solid green" : "2px solid black",
                 marginTop: correct ? "-2px" : "0",
-                width: "150px",
-                height: "150px"
+                width: "200px",
+                height: "200px"
               }}
             ></canvas>
             {!loaded && (
@@ -163,8 +171,8 @@
                 position: "absolute",
                 top: 0,
                 left: 0,
-                width: "150px",
-                height: "150px",
+                width: "200px",
+                height: "200px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -214,7 +222,7 @@
         }
       };
 
-      // If the container's height is less than the viewport, load additional rows.
+      // New effect: if container height is less than viewport and more rows exist, load additional rows.
       useEffect(() => {
         if (containerRef.current && molecules.length > 0) {
           if (containerRef.current.scrollHeight < window.innerHeight && page * 5 < molecules.length) {
@@ -233,12 +241,14 @@
         <div className="container" ref={containerRef}>
           {molecules.slice(0, page * 5).map((mol, index) => (
             <div key={index} className="molecule-row">
+              <div className="blank-col"></div>
               {/* Reference card with header */}
               <MoleculeCard
                 smiles={(mol.ref || "").replace(/\s+/g, "")}
                 header="Reference"
                 openExternalViewer={openExternalViewer}
               />
+              <div className="divider"></div>
               {/* Prediction cards: only first 4 */}
               {mol.hyps && mol.hyps.slice(0, 4).map((hyp, hIdx) => (
                 <MoleculeCard
@@ -250,6 +260,7 @@
                   correct={((hyp.pred || "").replace(/\s+/g, "") === (mol.ref || "").replace(/\s+/g, ""))}
                 />
               ))}
+              <div className="blank-col"></div>
             </div>
           ))}
         </div>
