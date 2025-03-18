@@ -229,7 +229,7 @@
       }, [molecules, page]);
 
       const openExternalViewer = (smiles) => {
-        const url = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/${encodeURIComponent(smiles)}/PNG`;
+        const url = `https://cactus.nci.nih.gov/chemical/structure/${encodeURIComponent(smiles)}`;
         window.open(url, "_blank");
       };
 
@@ -261,6 +261,39 @@
       );
     }
 
+    function Intro() {
+      return (
+        <div style={{ padding: "10px 20px", background: "#eee", marginBottom: "10px" }}>
+          This page displays molecular structures
+          predicted by a transformer model from ¹H-NMR spectra
+          found in the
+          "<a href="https://zenodo.org/records/11611178" target="_blank">Alberts et al. multimodal dataset</a>".
+
+          Specifically,
+          the reference shows a molecule from the test set,
+          while the model predicts the molecules to its right
+          based on the ¹H-NMR multiplets
+          of the reference molecule
+          (simulated using MestReNova).
+
+          Scroll down to see more samples.
+
+          The confidence score (log-likelihood according to the model)
+          is shown above each prediction.
+          Correct predictions are highlighted in green.
+
+          The model may generate invalid SMILES strings, and occasionally non-canonical ones
+          (which won't be recognized as correct by this page).
+
+          The package we're using here to display the molecules
+          may fail on some valid SMILES strings as well.
+
+          If a reference molecule appears empty,
+          it's probably due to an upstream parsing bug.
+        </div>
+      );
+    }
+
     function App() {
       const defaultUrl = "./work/001_big/lambda/20250309-220000/translation/tgt-test_n1000.txt__model_step_250000__n_best=10__beam_size=100.txt.json";
       const [dataUrl, setDataUrl] = useState(defaultUrl);
@@ -268,6 +301,7 @@
 
       return (
         <React.Fragment>
+          <Intro />
           <div className="top-bar">
             <input
               type="text"
