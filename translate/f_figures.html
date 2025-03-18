@@ -38,6 +38,12 @@
       padding: 10px;
       border-bottom: 1px solid #ddd;
     }
+    .molecule-row::after {
+      content: "\00a0"; /* non-breaking space */
+      display: block;
+      width: 20px;
+      flex-shrink: 0;
+    }
     .blank-col {
       width: 20px; /* fixed blank column on left/right */
       flex-shrink: 0;
