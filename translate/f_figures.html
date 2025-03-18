@@ -45,11 +45,12 @@
       width: 150px;
       cursor: pointer;
     }
-    /* Each canvas is rendered with an intrinsic size of 300x300 for higher resolution, but displayed at 150x150 */
+    /* We'll render each canvas at an intrinsic 300x300 for higher resolution but display it at 150x150 */
     .molecule-canvas {
       width: 150px;
       height: 150px;
     }
+    /* Both header and score now use the same font settings */
     .score,
     .header-text {
       font-size: 12px;
@@ -69,7 +70,7 @@
 </head>
 <body>
   <div class="top-bar">
-    <!-- Use value attribute so the default URL is visible on load -->
+    <!-- Using value attribute so the default URL appears on load -->
     <input id="dataUrlInput" type="text" value="./work/001_big/lambda/20250309-220000/translation/tgt-test_n1000.txt__model_step_250000__n_best=10__beam_size=100.txt.json" />
     <button id="loadButton">Load Data</button>
   </div>
@@ -85,7 +86,7 @@
     const { useState, useEffect, useRef } = React;
 
     // Fallback data with simple, short SMILES.
-    // (Second hyp in first entry is intentionally invalid.)
+    // (Second hypothesis in the first entry is intentionally invalid.)
     const fallbackData = [
       {
         sent: "C 6 H 6",
@@ -115,25 +116,71 @@
       ctx.fillText(msg, canvas.width / 2, canvas.height / 2);
     };
 
-    // MoleculeCard component: displays an optional header, score (for predictions), image, and SMILES.
-    // The "correct" prop sets a thicker green border if true.
-    const MoleculeCard = ({ smiles, score, isPrediction, header, canvasId, openExternalViewer, correct }) => (
-      <div className="molecule-card" onClick={() => openExternalViewer(smiles)}>
-        {header && <div className="header-text">{header}</div>}
-        {isPrediction && !header && <div className="score">{score}</div>}
-        <canvas
-          id={canvasId}
-          className="molecule-canvas"
-          width="300" height="300"
-          style={{
-            border: correct ? "4px solid green" : "2px solid black",
-            // Adjust position if border is thicker so images align
-            marginTop: correct ? "-2px" : "0"
-          }}
-        ></canvas>
-        <div className="smiles-text">{smiles}</div>
-      </div>
-    );
+    // MoleculeCard component renders its own canvas.
+    // While the drawing is in progress, an overlay shows "Loading...".
+    // If "correct" is true, a thicker green border is used.
+    const MoleculeCard = ({ smiles, score, isPrediction, header, correct, openExternalViewer }) => {
+      const canvasRef = useRef(null);
+      const [loaded, setLoaded] = useState(false);
+
+      useEffect(() => {
+        setLoaded(false);
+        const canvas = canvasRef.current;
+        if (canvas) {
+          const drawer = new SmilesDrawer.Drawer({ width: 300, height: 300 });
+          SmilesDrawer.parse(
+            smiles,
+            (tree) => {
+              drawer.draw(tree, canvas, "light");
+              setLoaded(true);
+            },
+            (err) => {
+              console.warn("Error parsing SMILES:", smiles, err);
+              drawError(canvas, "Invalid SMILES");
+              setLoaded(true);
+            }
+          );
+        }
+      }, [smiles]);
+
+      return (
+        <div className="molecule-card" onClick={() => openExternalViewer(smiles)}>
+          {header && <div className="header-text">{header}</div>}
+          {isPrediction && !header && <div className="score">{score}</div>}
+          <div style={{ position: "relative", width: "150px", height: "150px" }}>
+            <canvas
+              ref={canvasRef}
+              className="molecule-canvas"
+              width="300" height="300"
+              style={{
+                border: correct ? "4px solid green" : "2px solid black",
+                marginTop: correct ? "-2px" : "0",
+                width: "150px",
+                height: "150px"
+              }}
+            ></canvas>
+            {!loaded && (
+              <div style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "150px",
+                height: "150px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "rgba(255, 255, 255, 0.8)",
+                fontSize: "14px",
+                color: "gray"
+              }}>
+                Loading...
+              </div>
+            )}
+          </div>
+          <div className="smiles-text">{smiles}</div>
+        </div>
+      );
+    };
 
     function MoleculeViewer({ dataUrl }) {
       const [molecules, setMolecules] = useState([]);
@@ -146,13 +193,13 @@
         return () => window.removeEventListener("scroll", handleScroll);
       }, [dataUrl]);
 
-      // Load molecules from provided data URL or fallback.
+      // Load molecules from the provided data URL (or fallback).
       const loadMolecules = async () => {
         try {
           const response = await fetch(dataUrl);
           if (!response.ok) throw new Error("Failed to load");
           const data = await response.json();
-          setMolecules(data); // store full dataset
+          setMolecules(data); // Store full dataset.
           setPage(1);
         } catch (error) {
           console.warn("Using fallback data:", error);
@@ -168,40 +215,7 @@
         }
       };
 
-      useEffect(() => {
-        if (molecules.length > 0) {
-          drawMolecules();
-        }
-      }, [molecules, page]);
-
-      const drawMolecules = () => {
-        molecules.slice(0, page * 5).forEach((mol, index) => {
-          const refSmiles = mol.ref.replace(/\s+/g, "");
-          drawMolecule(`mol-ref-${index}`, refSmiles);
-          // Only display first 4 hypotheses.
-          mol.hyps.slice(0, 4).forEach((hyp, hIdx) => {
-            const predSmiles = hyp.pred.replace(/\s+/g, "");
-            drawMolecule(`mol-hyp-${index}-${hIdx}`, predSmiles);
-          });
-        });
-      };
-
-      const drawMolecule = (canvasId, smiles) => {
-        const canvas = document.getElementById(canvasId);
-        if (canvas) {
-          const drawer = new SmilesDrawer.Drawer({ width: 300, height: 300 });
-          SmilesDrawer.parse(
-            smiles,
-            (tree) => drawer.draw(tree, canvas, "light"),
-            (err) => {
-              console.warn("Error parsing SMILES:", smiles, err);
-              drawError(canvas, "Invalid SMILES");
-            }
-          );
-        }
-      };
-
-      // Open PubChem with the SMILES.
+      // Open PubChem with the given SMILES.
       const openExternalViewer = (smiles) => {
         const url = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/${encodeURIComponent(smiles)}/PNG`;
         window.open(url, "_blank");
@@ -215,7 +229,6 @@
               <MoleculeCard
                 smiles={mol.ref.replace(/\s+/g, "")}
                 header="Reference"
-                canvasId={`mol-ref-${index}`}
                 openExternalViewer={openExternalViewer}
               />
               {/* Prediction cards: only first 4 */}
@@ -225,9 +238,8 @@
                   smiles={hyp.pred.replace(/\s+/g, "")}
                   score={hyp.score}
                   isPrediction={true}
-                  canvasId={`mol-hyp-${index}-${hIdx}`}
                   openExternalViewer={openExternalViewer}
-                  correct={ (hyp.pred.replace(/\s+/g, "") === mol.ref.replace(/\s+/g, "")) }
+                  correct={hyp.pred.replace(/\s+/g, "") === mol.ref.replace(/\s+/g, "")}
                 />
               ))}
             </div>
