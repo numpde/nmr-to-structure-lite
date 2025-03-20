@@ -7,27 +7,9 @@ import pandas as pd
 from pathlib import Path
 from parse import parse
 from plox import Plox
-from rdkit import Chem
-
-from rdkit import RDLogger
-from rdkit.Chem import MolFromSmiles
-from rdkit.Chem.rdMolDescriptors import CalcMolFormula
-
-RDLogger.DisableLog('rdApp.*')
 
 
-# Example Usage
-
-def canon_or_none(smiles: str, use_chiral: bool = True):
-    if smiles:
-        smiles = smiles.replace(" ", "")
-        return Chem.CanonSmiles(smiles, useChiral=int(use_chiral)) if Chem.MolFromSmiles(smiles) else None
-
-
-def mol_formula_or_none(smiles: str):
-    if smiles := canon_or_none(smiles):
-        if mol := MolFromSmiles(smiles):
-            return CalcMolFormula(mol)
+from u_utils import canon_or_none, mol_formula_or_none, is_match_while_not_none
 
 
 def process_translation(
@@ -49,11 +31,9 @@ def process_translation(
     with translation_file.open(mode='r') as fd:
         data = json.load(fd)
 
-    def is_match_while_not_none(x, y) -> bool:
-        return (x is not None) and (y is not None) and (x == y)
-
     df = pd.DataFrame(data=[
         {
+            'ref': canon_or_none(sample['ref'], use_chiral=use_chiral),
             'sample_id': i,
             'score': hyp['score'],
             'is_match': is_match_while_not_none(

@@ -48,8 +48,8 @@ mkdir -p "${WORK_DATA_PATH}"
 WORK_TRANSLATION_PATH="${WORK_PATH}/translation"
 mkdir -p "${WORK_TRANSLATION_PATH}"
 
-# Sample DATA_PATH/tgt-test.txt 10000 times
-N=1000 # Number of samples
+# Sample from the test set
+N=10000 # Number of samples
 WORK_SRC_TST="${WORK_DATA_PATH}/src-test_n$N.txt"
 WORK_TGT_TST="${WORK_DATA_PATH}/tgt-test_n$N.txt"
 paste "${DATA_PATH}/src-test.txt" "${DATA_PATH}/tgt-test.txt" | \
@@ -66,7 +66,7 @@ echo "Using checkpoint: ${CHECKPOINT_NAME}"
 
 # Translate
 NBEST=10
-BEAM_SIZE=100
+BEAM_SIZE=20
 OUTPUT_FILE_NAME="$(basename ${WORK_TGT_TST})__${CHECKPOINT_NAME}__n_best=${NBEST}__beam_size=${BEAM_SIZE}.txt"
 OUTPUT_FILE="${WORK_TRANSLATION_PATH}/${OUTPUT_FILE_NAME}"
 
