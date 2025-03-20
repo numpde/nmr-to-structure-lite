@@ -91,6 +91,7 @@
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://unpkg.com/openchemlib/dist/openchemlib-full.js"></script>
 
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
@@ -228,6 +229,27 @@
         }
       }, [molecules, page]);
 
+      const canonicalizeSmiles = (smiles) => {
+        smiles = (smiles || "").replace(/\s+/g, "");
+        try {
+          const mol = OCL.Molecule.fromSmiles(smiles);
+          return mol.toSmiles();
+          //return smiles;
+          //return RDKit.Molecule.fromSmiles(smiles).getCanonicalSmiles();
+          //return RDKitModule.get_mol(smiles).get_smiles();
+        } catch (ex) {
+          console.warn(`Invalid SMILES: "${smiles}" because of ${ex}`);
+          return null;
+        }
+      };
+
+      const smilesMatch = (smiles1, smiles2) => {
+        const canon1 = canonicalizeSmiles(smiles1);
+        const canon2 = canonicalizeSmiles(smiles2);
+
+        return !(canon1 === null && canon2 === null) && (canon1 === canon2);
+      };
+
       const openExternalViewer = (smiles) => {
         const url = `https://cactus.nci.nih.gov/chemical/structure/${encodeURIComponent(smiles)}`;
         window.open(url, "_blank");
@@ -251,7 +273,7 @@
                   score={hyp.score}
                   isPrediction={true}
                   openExternalViewer={openExternalViewer}
-                  correct={((hyp.pred || "").replace(/\s+/g, "") === (mol.ref || "").replace(/\s+/g, ""))}
+                  correct={smilesMatch(hyp.pred, mol.ref)}
                 />
               ))}
               <div className="blank-col"></div>
