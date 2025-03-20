@@ -34,10 +34,17 @@ def parse_sentences(file_path: Path) -> Generator[Dict[str, Any], None, None]:
     with file_path.open(mode='r', encoding="utf-8") as fd:
         for line in fd:
             if sent_match := sentence_pattern.match(line):
-                yield {
+                parsed_sentence = {
                     'sent': " ".join(parse_array(sent_match.group(1))),
                     'hyps': list(parse_hyp(fd)),
                 }
+
+                # print(parsed_sentence); exit()
+
+                assert parsed_sentence['sent'], "No sentence found"
+                assert parsed_sentence['hyps'], "No hypotheses found for sentence"
+
+                yield parsed_sentence
 
 
 def main(input_path: Path):
