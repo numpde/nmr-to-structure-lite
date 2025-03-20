@@ -234,6 +234,7 @@
         try {
           const mol = OCL.Molecule.fromSmiles(smiles);
           return mol.toSmiles();
+          //return mol.getCanonizedIDCode();
           //return smiles;
           //return RDKit.Molecule.fromSmiles(smiles).getCanonicalSmiles();
           //return RDKitModule.get_mol(smiles).get_smiles();
@@ -303,13 +304,16 @@
 
           The confidence score (log-likelihood according to the model)
           is shown above each prediction.
+
           Correct predictions are highlighted in green.
 
-          The model may generate invalid SMILES strings, and occasionally non-canonical ones
-          (which won't be recognized as correct by this page).
+          The model may generate invalid SMILES strings, and occasionally non-canonical ones.
 
           The package we're using here to display the molecules
-          may fail on some valid SMILES strings as well.
+          may fail on some valid SMILES strings.
+
+          We're using here the openchemlib package to compare SMILES strings
+          for equality; this may have its quirks.
 
           If a reference molecule appears empty,
           it's probably due to an upstream parsing bug.
