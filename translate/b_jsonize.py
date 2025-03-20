@@ -107,7 +107,11 @@ if __name__ == "__main__":
     translations: list[Path] = list(Path(__file__).parent.glob("work/**/translation/*.log"))
 
     for file in translations:
+        archive_path = file.with_suffix(".json")
+        if archive_path.exists():
+            print(f"Skipping {file}: JSON file already exists.")
+            continue
+
         # Assume main() returns a JSON-serializable object (e.g., a list or dict)
         parsed_json = main(file)
-        archive_path = file.with_suffix(".json")
         save_json(parsed_json, archive_path)
