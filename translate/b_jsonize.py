@@ -2,6 +2,7 @@ import re
 import json
 import gzip
 
+from rapidfuzz import process
 from rdkit import RDLogger
 from typing import Dict, Any, Generator
 from pathlib import Path
@@ -68,10 +69,23 @@ def main(input_path: Path):
 
     parsed_predictions = list(parse_sentences(input_path))
 
+    def find_ref_smiles(sent: str):
+        if sent not in dataset:
+            # This is the expected reason:
+            # there were <unk> tokens in the source sentence
+            assert "<unk>" in sent
+
+            # Find the closest match with a threshold (e.g., 90)
+            match = process.extractOne(query=sent, choices=dataset.keys(), score_cutoff=90)
+
+            return None if match is None else dataset[match[0]]
+
+        return dataset[sent]
+
     parsed_predictions = [
         {
             **entry,
-            'ref': dataset.get(entry['sent']),
+            'ref': find_ref_smiles(entry['sent']),
         }
         for entry in parsed_predictions
     ]
