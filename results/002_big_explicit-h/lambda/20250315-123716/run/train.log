@@ -211,3 +211,350 @@
 [2025-03-15 16:47:40,076 INFO] Weighted corpora loaded so far:
 			* corpus_1: 18
 [2025-03-15 16:47:49,477 INFO] Step 25000/100000; acc: 95.5; ppl:   2.3; xent: 0.8; lr: 0.00056; sents:  461343; bsz: 4029/2207/58; 56104/30731 tok/s;  15026 sec;
+[2025-03-15 16:57:32,060 INFO] Step 26000/100000; acc: 95.6; ppl:   2.3; xent: 0.8; lr: 0.00055; sents:  461016; bsz: 4029/2202/58; 55324/30241 tok/s;  15608 sec;
+[2025-03-15 16:58:43,315 INFO] Weighted corpora loaded so far:
+			* corpus_1: 19
+[2025-03-15 16:58:45,592 INFO] Weighted corpora loaded so far:
+			* corpus_1: 19
+[2025-03-15 17:07:12,961 INFO] Step 27000/100000; acc: 95.7; ppl:   2.3; xent: 0.8; lr: 0.00054; sents:  458365; bsz: 4028/2218/57; 55468/30539 tok/s;  16189 sec;
+[2025-03-15 17:09:49,062 INFO] Weighted corpora loaded so far:
+			* corpus_1: 20
+[2025-03-15 17:09:54,909 INFO] Weighted corpora loaded so far:
+			* corpus_1: 20
+[2025-03-15 17:16:54,886 INFO] Step 28000/100000; acc: 95.8; ppl:   2.3; xent: 0.8; lr: 0.00053; sents:  463126; bsz: 4030/2196/58; 55400/30183 tok/s;  16771 sec;
+[2025-03-15 17:20:54,132 INFO] Weighted corpora loaded so far:
+			* corpus_1: 21
+[2025-03-15 17:21:00,957 INFO] Weighted corpora loaded so far:
+			* corpus_1: 21
+[2025-03-15 17:26:33,200 INFO] Step 29000/100000; acc: 95.9; ppl:   2.3; xent: 0.8; lr: 0.00052; sents:  457110; bsz: 4026/2195/57; 55696/30359 tok/s;  17350 sec;
+[2025-03-15 17:36:16,657 INFO] Step 30000/100000; acc: 96.0; ppl:   2.3; xent: 0.8; lr: 0.00051; sents:  458209; bsz: 4029/2201/57; 55243/30181 tok/s;  17933 sec;
+[2025-03-15 17:40:27,884 INFO] valid stats calculation
+                           took: 251.22614932060242 s.
+[2025-03-15 17:40:27,885 INFO] Train perplexity: 2.63179
+[2025-03-15 17:40:27,885 INFO] Train accuracy: 90.1404
+[2025-03-15 17:40:27,885 INFO] Sentences processed: 1.38013e+07
+[2025-03-15 17:40:27,885 INFO] Average bsz: 4028/2204/58
+[2025-03-15 17:40:27,885 INFO] Validation perplexity: 2.31725
+[2025-03-15 17:40:27,886 INFO] Validation accuracy: 96.3161
+[2025-03-15 17:40:27,888 INFO] Saving checkpoint /home/ubuntu/tmp/nmr-to-structure-lite/002_big_explicit-h/lambda/20250315-123716/run/model_step_30000.pt
+[2025-03-15 17:46:51,289 INFO] Weighted corpora loaded so far:
+			* corpus_1: 22
+[2025-03-15 17:46:54,170 INFO] Weighted corpora loaded so far:
+			* corpus_1: 22
+[2025-03-15 17:50:03,941 INFO] Step 31000/100000; acc: 96.0; ppl:   2.3; xent: 0.8; lr: 0.00050; sents:  464598; bsz: 4029/2213/58; 38962/21404 tok/s;  18760 sec;
+[2025-03-15 17:57:58,514 INFO] Weighted corpora loaded so far:
+			* corpus_1: 23
+[2025-03-15 17:58:01,368 INFO] Weighted corpora loaded so far:
+			* corpus_1: 23
+[2025-03-15 17:59:46,296 INFO] Step 32000/100000; acc: 96.1; ppl:   2.3; xent: 0.8; lr: 0.00049; sents:  459045; bsz: 4026/2209/57; 55312/30349 tok/s;  19343 sec;
+[2025-03-15 18:08:59,762 INFO] Weighted corpora loaded so far:
+			* corpus_1: 24
+[2025-03-15 18:09:02,818 INFO] Weighted corpora loaded so far:
+			* corpus_1: 24
+[2025-03-15 18:09:24,595 INFO] Step 33000/100000; acc: 96.1; ppl:   2.2; xent: 0.8; lr: 0.00049; sents:  459225; bsz: 4029/2199/57; 55737/30417 tok/s;  19921 sec;
+[2025-03-15 18:18:58,321 INFO] Step 34000/100000; acc: 96.2; ppl:   2.2; xent: 0.8; lr: 0.00048; sents:  459578; bsz: 4029/2203/57; 56180/30712 tok/s;  20495 sec;
+[2025-03-15 18:28:41,386 INFO] Step 35000/100000; acc: 96.3; ppl:   2.2; xent: 0.8; lr: 0.00047; sents:  462692; bsz: 4026/2207/58; 55243/30280 tok/s;  21078 sec;
+[2025-03-15 18:30:48,172 INFO] Weighted corpora loaded so far:
+			* corpus_1: 25
+[2025-03-15 18:30:51,090 INFO] Weighted corpora loaded so far:
+			* corpus_1: 25
+[2025-03-15 18:38:20,147 INFO] Step 36000/100000; acc: 96.4; ppl:   2.2; xent: 0.8; lr: 0.00047; sents:  458362; bsz: 4031/2194/57; 55714/30330 tok/s;  21657 sec;
+[2025-03-15 18:41:50,054 INFO] Weighted corpora loaded so far:
+			* corpus_1: 26
+[2025-03-15 18:41:56,595 INFO] Weighted corpora loaded so far:
+			* corpus_1: 26
+[2025-03-15 18:47:59,327 INFO] Step 37000/100000; acc: 96.4; ppl:   2.2; xent: 0.8; lr: 0.00046; sents:  459780; bsz: 4027/2210/57; 55623/30522 tok/s;  22236 sec;
+[2025-03-15 18:52:54,660 INFO] Weighted corpora loaded so far:
+			* corpus_1: 27
+[2025-03-15 18:53:01,716 INFO] Weighted corpora loaded so far:
+			* corpus_1: 27
+[2025-03-15 18:57:42,044 INFO] Step 38000/100000; acc: 96.4; ppl:   2.2; xent: 0.8; lr: 0.00045; sents:  459067; bsz: 4030/2208/57; 55325/30307 tok/s;  22818 sec;
+[2025-03-15 19:04:03,218 INFO] Weighted corpora loaded so far:
+			* corpus_1: 28
+[2025-03-15 19:04:07,596 INFO] Weighted corpora loaded so far:
+			* corpus_1: 28
+[2025-03-15 19:07:24,811 INFO] Step 39000/100000; acc: 96.5; ppl:   2.2; xent: 0.8; lr: 0.00045; sents:  462282; bsz: 4029/2209/58; 55315/30321 tok/s;  23401 sec;
+[2025-03-15 19:17:07,527 INFO] Step 40000/100000; acc: 96.5; ppl:   2.2; xent: 0.8; lr: 0.00044; sents:  459876; bsz: 4028/2202/57; 55293/30225 tok/s;  23984 sec;
+[2025-03-15 19:21:17,526 INFO] valid stats calculation
+                           took: 249.99778032302856 s.
+[2025-03-15 19:21:17,527 INFO] Train perplexity: 2.52809
+[2025-03-15 19:21:17,527 INFO] Train accuracy: 91.6811
+[2025-03-15 19:21:17,527 INFO] Sentences processed: 1.84058e+07
+[2025-03-15 19:21:17,527 INFO] Average bsz: 4028/2204/58
+[2025-03-15 19:21:17,527 INFO] Validation perplexity: 2.30148
+[2025-03-15 19:21:17,527 INFO] Validation accuracy: 96.7398
+[2025-03-15 19:21:17,529 INFO] Saving checkpoint /home/ubuntu/tmp/nmr-to-structure-lite/002_big_explicit-h/lambda/20250315-123716/run/model_step_40000.pt
+[2025-03-15 19:30:02,001 INFO] Weighted corpora loaded so far:
+			* corpus_1: 29
+[2025-03-15 19:30:02,147 INFO] Weighted corpora loaded so far:
+			* corpus_1: 29
+[2025-03-15 19:30:58,368 INFO] Step 41000/100000; acc: 96.6; ppl:   2.2; xent: 0.8; lr: 0.00044; sents:  459520; bsz: 4028/2200/57; 38783/21186 tok/s;  24815 sec;
+[2025-03-15 19:40:32,214 INFO] Step 42000/100000; acc: 96.6; ppl:   2.2; xent: 0.8; lr: 0.00043; sents:  460171; bsz: 4031/2201/58; 56195/30683 tok/s;  25389 sec;
+[2025-03-15 19:41:04,933 INFO] Weighted corpora loaded so far:
+			* corpus_1: 30
+[2025-03-15 19:41:07,937 INFO] Weighted corpora loaded so far:
+			* corpus_1: 30
+[2025-03-15 19:50:12,388 INFO] Step 43000/100000; acc: 96.7; ppl:   2.2; xent: 0.8; lr: 0.00043; sents:  460897; bsz: 4027/2209/58; 55532/30464 tok/s;  25969 sec;
+[2025-03-15 19:52:13,899 INFO] Weighted corpora loaded so far:
+			* corpus_1: 31
+[2025-03-15 19:52:14,819 INFO] Weighted corpora loaded so far:
+			* corpus_1: 31
+[2025-03-15 19:59:55,153 INFO] Step 44000/100000; acc: 96.7; ppl:   2.2; xent: 0.8; lr: 0.00042; sents:  459517; bsz: 4029/2208/57; 55310/30317 tok/s;  26552 sec;
+[2025-03-15 20:09:34,195 INFO] Step 45000/100000; acc: 96.8; ppl:   2.2; xent: 0.8; lr: 0.00042; sents:  461323; bsz: 4026/2201/58; 55628/30411 tok/s;  27131 sec;
+[2025-03-15 20:13:58,834 INFO] Weighted corpora loaded so far:
+			* corpus_1: 32
+[2025-03-15 20:14:01,792 INFO] Weighted corpora loaded so far:
+			* corpus_1: 32
+[2025-03-15 20:19:17,254 INFO] Step 46000/100000; acc: 96.8; ppl:   2.2; xent: 0.8; lr: 0.00041; sents:  457650; bsz: 4032/2195/57; 55315/30122 tok/s;  27714 sec;
+[2025-03-15 20:25:05,170 INFO] Weighted corpora loaded so far:
+			* corpus_1: 33
+[2025-03-15 20:25:12,043 INFO] Weighted corpora loaded so far:
+			* corpus_1: 33
+[2025-03-15 20:28:58,278 INFO] Step 47000/100000; acc: 96.8; ppl:   2.2; xent: 0.8; lr: 0.00041; sents:  461985; bsz: 4026/2217/58; 55432/30520 tok/s;  28295 sec;
+[2025-03-15 20:36:07,253 INFO] Weighted corpora loaded so far:
+			* corpus_1: 34
+[2025-03-15 20:36:19,135 INFO] Weighted corpora loaded so far:
+			* corpus_1: 34
+[2025-03-15 20:38:36,561 INFO] Step 48000/100000; acc: 96.9; ppl:   2.2; xent: 0.8; lr: 0.00040; sents:  460842; bsz: 4029/2204/58; 55733/30491 tok/s;  28873 sec;
+[2025-03-15 20:48:18,621 INFO] Step 49000/100000; acc: 96.9; ppl:   2.2; xent: 0.8; lr: 0.00040; sents:  457679; bsz: 4029/2197/57; 55378/30194 tok/s;  29455 sec;
+[2025-03-15 20:57:53,002 INFO] Step 50000/100000; acc: 96.9; ppl:   2.2; xent: 0.8; lr: 0.00040; sents:  461879; bsz: 4029/2207/58; 56114/30744 tok/s;  30029 sec;
+[2025-03-15 21:02:04,410 INFO] valid stats calculation
+                           took: 251.40720915794373 s.
+[2025-03-15 21:02:04,411 INFO] Train perplexity: 2.46232
+[2025-03-15 21:02:04,411 INFO] Train accuracy: 92.6973
+[2025-03-15 21:02:04,411 INFO] Sentences processed: 2.30073e+07
+[2025-03-15 21:02:04,411 INFO] Average bsz: 4028/2204/58
+[2025-03-15 21:02:04,411 INFO] Validation perplexity: 2.29462
+[2025-03-15 21:02:04,411 INFO] Validation accuracy: 96.9735
+[2025-03-15 21:02:04,413 INFO] Saving checkpoint /home/ubuntu/tmp/nmr-to-structure-lite/002_big_explicit-h/lambda/20250315-123716/run/model_step_50000.pt
+[2025-03-15 21:02:10,372 INFO] Weighted corpora loaded so far:
+			* corpus_1: 35
+[2025-03-15 21:02:13,731 INFO] Weighted corpora loaded so far:
+			* corpus_1: 35
+[2025-03-15 21:11:41,220 INFO] Step 51000/100000; acc: 97.0; ppl:   2.2; xent: 0.8; lr: 0.00039; sents:  459465; bsz: 4029/2198/57; 38914/21230 tok/s;  30858 sec;
+[2025-03-15 21:13:13,016 INFO] Weighted corpora loaded so far:
+			* corpus_1: 36
+[2025-03-15 21:13:16,496 INFO] Weighted corpora loaded so far:
+			* corpus_1: 36
+[2025-03-15 21:21:24,080 INFO] Step 52000/100000; acc: 97.0; ppl:   2.2; xent: 0.8; lr: 0.00039; sents:  461536; bsz: 4026/2205/58; 55262/30264 tok/s;  31440 sec;
+[2025-03-15 21:24:15,032 INFO] Weighted corpora loaded so far:
+			* corpus_1: 37
+[2025-03-15 21:24:23,077 INFO] Weighted corpora loaded so far:
+			* corpus_1: 37
+[2025-03-15 21:31:04,356 INFO] Step 53000/100000; acc: 97.0; ppl:   2.2; xent: 0.8; lr: 0.00038; sents:  459886; bsz: 4029/2203/57; 55546/30366 tok/s;  32021 sec;
+[2025-03-15 21:35:21,997 INFO] Weighted corpora loaded so far:
+			* corpus_1: 38
+[2025-03-15 21:35:29,870 INFO] Weighted corpora loaded so far:
+			* corpus_1: 38
+[2025-03-15 21:40:43,982 INFO] Step 54000/100000; acc: 97.0; ppl:   2.2; xent: 0.8; lr: 0.00038; sents:  458213; bsz: 4028/2209/57; 55599/30487 tok/s;  32600 sec;
+[2025-03-15 21:50:25,168 INFO] Step 55000/100000; acc: 97.1; ppl:   2.2; xent: 0.8; lr: 0.00038; sents:  462151; bsz: 4030/2204/58; 55474/30341 tok/s;  33182 sec;
+[2025-03-15 21:57:07,932 INFO] Weighted corpora loaded so far:
+			* corpus_1: 39
+[2025-03-15 21:57:15,090 INFO] Weighted corpora loaded so far:
+			* corpus_1: 39
+[2025-03-15 22:00:07,687 INFO] Step 56000/100000; acc: 97.1; ppl:   2.2; xent: 0.8; lr: 0.00037; sents:  457176; bsz: 4025/2205/57; 55281/30280 tok/s;  33764 sec;
+[2025-03-15 22:08:16,091 INFO] Weighted corpora loaded so far:
+			* corpus_1: 40
+[2025-03-15 22:08:20,672 INFO] Weighted corpora loaded so far:
+			* corpus_1: 40
+[2025-03-15 22:09:50,253 INFO] Step 57000/100000; acc: 97.1; ppl:   2.2; xent: 0.8; lr: 0.00037; sents:  462237; bsz: 4030/2204/58; 55338/30267 tok/s;  34347 sec;
+[2025-03-15 22:19:21,657 INFO] Weighted corpora loaded so far:
+			* corpus_1: 41
+[2025-03-15 22:19:24,320 INFO] Step 58000/100000; acc: 97.1; ppl:   2.2; xent: 0.8; lr: 0.00037; sents:  459991; bsz: 4028/2203/57; 56134/30700 tok/s;  34921 sec;
+[2025-03-15 22:19:30,772 INFO] Weighted corpora loaded so far:
+			* corpus_1: 41
+[2025-03-15 22:29:07,611 INFO] Step 59000/100000; acc: 97.2; ppl:   2.2; xent: 0.8; lr: 0.00036; sents:  460802; bsz: 4030/2199/58; 55270/30159 tok/s;  35504 sec;
+[2025-03-15 22:38:47,185 INFO] Step 60000/100000; acc: 97.2; ppl:   2.2; xent: 0.8; lr: 0.00036; sents:  460241; bsz: 4030/2202/58; 55624/30391 tok/s;  36084 sec;
+[2025-03-15 22:42:57,011 INFO] valid stats calculation
+                           took: 249.8252408504486 s.
+[2025-03-15 22:42:57,012 INFO] Train perplexity: 2.41625
+[2025-03-15 22:42:57,012 INFO] Train accuracy: 93.4282
+[2025-03-15 22:42:57,012 INFO] Sentences processed: 2.7609e+07
+[2025-03-15 22:42:57,012 INFO] Average bsz: 4028/2204/58
+[2025-03-15 22:42:57,012 INFO] Validation perplexity: 2.28711
+[2025-03-15 22:42:57,012 INFO] Validation accuracy: 97.1431
+[2025-03-15 22:42:57,014 INFO] Saving checkpoint /home/ubuntu/tmp/nmr-to-structure-lite/002_big_explicit-h/lambda/20250315-123716/run/model_step_60000.pt
+[2025-03-15 22:45:18,864 INFO] Weighted corpora loaded so far:
+			* corpus_1: 42
+[2025-03-15 22:45:23,497 INFO] Weighted corpora loaded so far:
+			* corpus_1: 42
+[2025-03-15 22:52:34,583 INFO] Step 61000/100000; acc: 97.2; ppl:   2.2; xent: 0.8; lr: 0.00036; sents:  459872; bsz: 4024/2214/57; 38903/21402 tok/s;  36911 sec;
+[2025-03-15 22:56:23,922 INFO] Weighted corpora loaded so far:
+			* corpus_1: 43
+[2025-03-15 22:56:25,537 INFO] Weighted corpora loaded so far:
+			* corpus_1: 43
+[2025-03-15 23:02:17,467 INFO] Step 62000/100000; acc: 97.3; ppl:   2.2; xent: 0.8; lr: 0.00035; sents:  460362; bsz: 4029/2202/58; 55296/30224 tok/s;  37494 sec;
+[2025-03-15 23:07:28,985 INFO] Weighted corpora loaded so far:
+			* corpus_1: 44
+[2025-03-15 23:07:34,342 INFO] Weighted corpora loaded so far:
+			* corpus_1: 44
+[2025-03-15 23:11:56,236 INFO] Step 63000/100000; acc: 97.3; ppl:   2.2; xent: 0.8; lr: 0.00035; sents:  459801; bsz: 4028/2208/57; 55682/30521 tok/s;  38073 sec;
+[2025-03-15 23:21:37,705 INFO] Step 64000/100000; acc: 97.3; ppl:   2.2; xent: 0.8; lr: 0.00035; sents:  458579; bsz: 4029/2189/57; 55426/30113 tok/s;  38654 sec;
+[2025-03-15 23:29:16,898 INFO] Weighted corpora loaded so far:
+			* corpus_1: 45
+[2025-03-15 23:29:21,624 INFO] Weighted corpora loaded so far:
+			* corpus_1: 45
+[2025-03-15 23:31:20,718 INFO] Step 65000/100000; acc: 97.3; ppl:   2.2; xent: 0.8; lr: 0.00035; sents:  459724; bsz: 4032/2216/57; 55325/30411 tok/s;  39237 sec;
+[2025-03-15 23:40:21,082 INFO] Weighted corpora loaded so far:
+			* corpus_1: 46
+[2025-03-15 23:40:26,178 INFO] Weighted corpora loaded so far:
+			* corpus_1: 46
+[2025-03-15 23:40:59,187 INFO] Step 66000/100000; acc: 97.3; ppl:   2.2; xent: 0.8; lr: 0.00034; sents:  461468; bsz: 4028/2201/58; 55704/30438 tok/s;  39816 sec;
+[2025-03-15 23:50:33,279 INFO] Step 67000/100000; acc: 97.4; ppl:   2.2; xent: 0.8; lr: 0.00034; sents:  461947; bsz: 4031/2207/58; 56166/30753 tok/s;  40390 sec;
+[2025-03-15 23:51:25,973 INFO] Weighted corpora loaded so far:
+			* corpus_1: 47
+[2025-03-15 23:51:35,049 INFO] Weighted corpora loaded so far:
+			* corpus_1: 47
+[2025-03-16 00:00:15,850 INFO] Step 68000/100000; acc: 97.4; ppl:   2.2; xent: 0.8; lr: 0.00034; sents:  459648; bsz: 4026/2204/57; 55286/30261 tok/s;  40972 sec;
+[2025-03-16 00:02:34,136 INFO] Weighted corpora loaded so far:
+			* corpus_1: 48
+[2025-03-16 00:02:37,105 INFO] Weighted corpora loaded so far:
+			* corpus_1: 48
+[2025-03-16 00:09:59,103 INFO] Step 69000/100000; acc: 97.4; ppl:   2.2; xent: 0.8; lr: 0.00034; sents:  460882; bsz: 4028/2211/58; 55248/30330 tok/s;  41555 sec;
+[2025-03-16 00:19:37,060 INFO] Step 70000/100000; acc: 97.4; ppl:   2.2; xent: 0.8; lr: 0.00033; sents:  458472; bsz: 4031/2189/57; 55794/30295 tok/s;  42133 sec;
+[2025-03-16 00:23:47,659 INFO] valid stats calculation
+                           took: 250.59816670417786 s.
+[2025-03-16 00:23:47,660 INFO] Train perplexity: 2.38185
+[2025-03-16 00:23:47,660 INFO] Train accuracy: 93.9846
+[2025-03-16 00:23:47,660 INFO] Sentences processed: 3.22097e+07
+[2025-03-16 00:23:47,660 INFO] Average bsz: 4028/2204/58
+[2025-03-16 00:23:47,661 INFO] Validation perplexity: 2.28284
+[2025-03-16 00:23:47,661 INFO] Validation accuracy: 97.2755
+[2025-03-16 00:23:47,663 INFO] Saving checkpoint /home/ubuntu/tmp/nmr-to-structure-lite/002_big_explicit-h/lambda/20250315-123716/run/model_step_70000.pt
+[2025-03-16 00:28:30,070 INFO] Weighted corpora loaded so far:
+			* corpus_1: 49
+[2025-03-16 00:28:35,963 INFO] Weighted corpora loaded so far:
+			* corpus_1: 49
+[2025-03-16 00:33:28,532 INFO] Step 71000/100000; acc: 97.4; ppl:   2.2; xent: 0.8; lr: 0.00033; sents:  459221; bsz: 4026/2208/57; 38737/21249 tok/s;  42965 sec;
+[2025-03-16 00:39:32,692 INFO] Weighted corpora loaded so far:
+			* corpus_1: 50
+[2025-03-16 00:39:42,220 INFO] Weighted corpora loaded so far:
+			* corpus_1: 50
+[2025-03-16 00:43:07,559 INFO] Step 72000/100000; acc: 97.4; ppl:   2.2; xent: 0.8; lr: 0.00033; sents:  460427; bsz: 4027/2201/58; 55634/30408 tok/s;  43544 sec;
+[2025-03-16 00:50:38,251 INFO] Weighted corpora loaded so far:
+			* corpus_1: 51
+[2025-03-16 00:50:43,855 INFO] Weighted corpora loaded so far:
+			* corpus_1: 51
+[2025-03-16 00:52:47,124 INFO] Step 73000/100000; acc: 97.5; ppl:   2.2; xent: 0.8; lr: 0.00033; sents:  460182; bsz: 4027/2209/58; 55592/30490 tok/s;  44124 sec;
+[2025-03-16 01:02:28,582 INFO] Step 74000/100000; acc: 97.5; ppl:   2.2; xent: 0.8; lr: 0.00032; sents:  460767; bsz: 4029/2205/58; 55426/30334 tok/s;  44705 sec;
+[2025-03-16 01:12:02,139 INFO] Step 75000/100000; acc: 97.5; ppl:   2.2; xent: 0.8; lr: 0.00032; sents:  460392; bsz: 4029/2203/58; 56201/30726 tok/s;  45279 sec;
+[2025-03-16 01:12:27,779 INFO] Weighted corpora loaded so far:
+			* corpus_1: 52
+[2025-03-16 01:12:31,249 INFO] Weighted corpora loaded so far:
+			* corpus_1: 52
+[2025-03-16 01:21:44,459 INFO] Step 76000/100000; acc: 97.5; ppl:   2.2; xent: 0.8; lr: 0.00032; sents:  459295; bsz: 4030/2201/57; 55367/30236 tok/s;  45861 sec;
+[2025-03-16 01:23:33,179 INFO] Weighted corpora loaded so far:
+			* corpus_1: 53
+[2025-03-16 01:23:38,952 INFO] Weighted corpora loaded so far:
+			* corpus_1: 53
+[2025-03-16 01:31:27,471 INFO] Step 77000/100000; acc: 97.5; ppl:   2.2; xent: 0.8; lr: 0.00032; sents:  461015; bsz: 4029/2211/58; 55281/30338 tok/s;  46444 sec;
+[2025-03-16 01:34:41,867 INFO] Weighted corpora loaded so far:
+			* corpus_1: 54
+[2025-03-16 01:34:44,925 INFO] Weighted corpora loaded so far:
+			* corpus_1: 54
+[2025-03-16 01:41:09,779 INFO] Step 78000/100000; acc: 97.6; ppl:   2.2; xent: 0.8; lr: 0.00032; sents:  459719; bsz: 4029/2195/57; 55358/30158 tok/s;  47026 sec;
+[2025-03-16 01:45:43,642 INFO] Weighted corpora loaded so far:
+			* corpus_1: 55
+[2025-03-16 01:45:54,419 INFO] Weighted corpora loaded so far:
+			* corpus_1: 55
+[2025-03-16 01:50:48,788 INFO] Step 79000/100000; acc: 97.6; ppl:   2.2; xent: 0.8; lr: 0.00031; sents:  458085; bsz: 4027/2204/57; 55639/30458 tok/s;  47605 sec;
+[2025-03-16 02:00:33,220 INFO] Step 80000/100000; acc: 97.6; ppl:   2.2; xent: 0.8; lr: 0.00031; sents:  464124; bsz: 4026/2219/58; 55115/30372 tok/s;  48190 sec;
+[2025-03-16 02:04:44,171 INFO] valid stats calculation
+                           took: 250.9500424861908 s.
+[2025-03-16 02:04:44,172 INFO] Train perplexity: 2.35501
+[2025-03-16 02:04:44,172 INFO] Train accuracy: 94.4254
+[2025-03-16 02:04:44,172 INFO] Sentences processed: 3.6813e+07
+[2025-03-16 02:04:44,172 INFO] Average bsz: 4028/2204/58
+[2025-03-16 02:04:44,173 INFO] Validation perplexity: 2.28211
+[2025-03-16 02:04:44,173 INFO] Validation accuracy: 97.3571
+[2025-03-16 02:04:44,175 INFO] Saving checkpoint /home/ubuntu/tmp/nmr-to-structure-lite/002_big_explicit-h/lambda/20250315-123716/run/model_step_80000.pt
+[2025-03-16 02:11:40,043 INFO] Weighted corpora loaded so far:
+			* corpus_1: 56
+[2025-03-16 02:11:46,969 INFO] Weighted corpora loaded so far:
+			* corpus_1: 56
+[2025-03-16 02:14:18,961 INFO] Step 81000/100000; acc: 97.6; ppl:   2.2; xent: 0.8; lr: 0.00031; sents:  458596; bsz: 4028/2194/57; 39024/21260 tok/s;  49015 sec;
+[2025-03-16 02:22:48,287 INFO] Weighted corpora loaded so far:
+			* corpus_1: 57
+[2025-03-16 02:22:55,747 INFO] Weighted corpora loaded so far:
+			* corpus_1: 57
+[2025-03-16 02:24:02,270 INFO] Step 82000/100000; acc: 97.6; ppl:   2.2; xent: 0.8; lr: 0.00031; sents:  459477; bsz: 4030/2204/57; 55269/30231 tok/s;  49599 sec;
+[2025-03-16 02:33:36,081 INFO] Step 83000/100000; acc: 97.6; ppl:   2.2; xent: 0.8; lr: 0.00031; sents:  459263; bsz: 4027/2201/57; 56140/30693 tok/s;  50172 sec;
+[2025-03-16 02:33:50,562 INFO] Weighted corpora loaded so far:
+			* corpus_1: 58
+[2025-03-16 02:33:57,775 INFO] Weighted corpora loaded so far:
+			* corpus_1: 58
+[2025-03-16 02:43:15,270 INFO] Step 84000/100000; acc: 97.7; ppl:   2.2; xent: 0.8; lr: 0.00030; sents:  458904; bsz: 4028/2201/57; 55636/30401 tok/s;  50752 sec;
+[2025-03-16 02:52:59,530 INFO] Step 85000/100000; acc: 97.7; ppl:   2.2; xent: 0.8; lr: 0.00030; sents:  460994; bsz: 4029/2204/58; 55172/30183 tok/s;  51336 sec;
+[2025-03-16 02:55:40,361 INFO] Weighted corpora loaded so far:
+			* corpus_1: 59
+[2025-03-16 02:55:47,745 INFO] Weighted corpora loaded so far:
+			* corpus_1: 59
+[2025-03-16 03:02:39,036 INFO] Step 86000/100000; acc: 97.7; ppl:   2.2; xent: 0.8; lr: 0.00030; sents:  459853; bsz: 4025/2201/57; 55569/30379 tok/s;  51915 sec;
+[2025-03-16 03:06:42,877 INFO] Weighted corpora loaded so far:
+			* corpus_1: 60
+[2025-03-16 03:06:50,454 INFO] Weighted corpora loaded so far:
+			* corpus_1: 60
+[2025-03-16 03:12:19,685 INFO] Step 87000/100000; acc: 97.7; ppl:   2.2; xent: 0.8; lr: 0.00030; sents:  460589; bsz: 4031/2212/58; 55539/30481 tok/s;  52496 sec;
+[2025-03-16 03:17:49,009 INFO] Weighted corpora loaded so far:
+			* corpus_1: 61
+[2025-03-16 03:17:56,413 INFO] Weighted corpora loaded so far:
+			* corpus_1: 61
+[2025-03-16 03:21:59,110 INFO] Step 88000/100000; acc: 97.7; ppl:   2.2; xent: 0.8; lr: 0.00030; sents:  462480; bsz: 4030/2202/58; 55635/30405 tok/s;  53075 sec;
+[2025-03-16 03:31:42,863 INFO] Step 89000/100000; acc: 97.7; ppl:   2.2; xent: 0.8; lr: 0.00030; sents:  459567; bsz: 4028/2210/57; 55207/30291 tok/s;  53659 sec;
+[2025-03-16 03:39:38,498 INFO] Weighted corpora loaded so far:
+			* corpus_1: 62
+[2025-03-16 03:39:45,584 INFO] Weighted corpora loaded so far:
+			* corpus_1: 62
+[2025-03-16 03:41:22,565 INFO] Step 90000/100000; acc: 97.7; ppl:   2.2; xent: 0.8; lr: 0.00029; sents:  459071; bsz: 4028/2197/57; 55588/30313 tok/s;  54239 sec;
+[2025-03-16 03:45:32,371 INFO] valid stats calculation
+                           took: 249.80463910102844 s.
+[2025-03-16 03:45:32,372 INFO] Train perplexity: 2.33338
+[2025-03-16 03:45:32,372 INFO] Train accuracy: 94.785
+[2025-03-16 03:45:32,372 INFO] Sentences processed: 4.14118e+07
+[2025-03-16 03:45:32,372 INFO] Average bsz: 4028/2204/58
+[2025-03-16 03:45:32,372 INFO] Validation perplexity: 2.28573
+[2025-03-16 03:45:32,372 INFO] Validation accuracy: 97.3382
+[2025-03-16 03:45:32,374 INFO] Saving checkpoint /home/ubuntu/tmp/nmr-to-structure-lite/002_big_explicit-h/lambda/20250315-123716/run/model_step_90000.pt
+[2025-03-16 03:54:51,529 INFO] Weighted corpora loaded so far:
+			* corpus_1: 63
+[2025-03-16 03:54:55,756 INFO] Weighted corpora loaded so far:
+			* corpus_1: 63
+[2025-03-16 03:55:03,885 INFO] Step 91000/100000; acc: 97.7; ppl:   2.2; xent: 0.8; lr: 0.00029; sents:  460669; bsz: 4027/2204/58; 39226/21468 tok/s;  55060 sec;
+[2025-03-16 04:04:44,667 INFO] Step 92000/100000; acc: 97.7; ppl:   2.2; xent: 0.8; lr: 0.00029; sents:  459746; bsz: 4030/2206/57; 55512/30381 tok/s;  55641 sec;
+[2025-03-16 04:05:58,041 INFO] Weighted corpora loaded so far:
+			* corpus_1: 64
+[2025-03-16 04:05:58,757 INFO] Weighted corpora loaded so far:
+			* corpus_1: 64
+[2025-03-16 04:14:26,397 INFO] Step 93000/100000; acc: 97.8; ppl:   2.2; xent: 0.8; lr: 0.00029; sents:  458007; bsz: 4027/2199/57; 55381/30237 tok/s;  56223 sec;
+[2025-03-16 04:17:04,019 INFO] Weighted corpora loaded so far:
+			* corpus_1: 65
+[2025-03-16 04:17:08,055 INFO] Weighted corpora loaded so far:
+			* corpus_1: 65
+[2025-03-16 04:24:06,574 INFO] Step 94000/100000; acc: 97.8; ppl:   2.2; xent: 0.8; lr: 0.00029; sents:  460604; bsz: 4030/2203/58; 55571/30374 tok/s;  56803 sec;
+[2025-03-16 04:33:48,935 INFO] Step 95000/100000; acc: 97.8; ppl:   2.2; xent: 0.8; lr: 0.00029; sents:  461777; bsz: 4027/2207/58; 55316/30317 tok/s;  57385 sec;
+[2025-03-16 04:38:48,814 INFO] Weighted corpora loaded so far:
+			* corpus_1: 66
+[2025-03-16 04:38:56,974 INFO] Weighted corpora loaded so far:
+			* corpus_1: 66
+[2025-03-16 04:43:29,344 INFO] Step 96000/100000; acc: 97.8; ppl:   2.2; xent: 0.8; lr: 0.00029; sents:  460903; bsz: 4028/2206/58; 55519/30401 tok/s;  57966 sec;
+[2025-03-16 04:49:54,754 INFO] Weighted corpora loaded so far:
+			* corpus_1: 67
+[2025-03-16 04:50:02,848 INFO] Weighted corpora loaded so far:
+			* corpus_1: 67
+[2025-03-16 04:53:08,169 INFO] Step 97000/100000; acc: 97.8; ppl:   2.2; xent: 0.8; lr: 0.00028; sents:  460262; bsz: 4027/2203/58; 55664/30452 tok/s;  58545 sec;
+[2025-03-16 05:01:00,366 INFO] Weighted corpora loaded so far:
+			* corpus_1: 68
+[2025-03-16 05:01:07,494 INFO] Weighted corpora loaded so far:
+			* corpus_1: 68
+[2025-03-16 05:02:49,932 INFO] Step 98000/100000; acc: 97.8; ppl:   2.2; xent: 0.8; lr: 0.00028; sents:  459055; bsz: 4028/2197/57; 55387/30218 tok/s;  59126 sec;
+[2025-03-16 05:12:31,936 INFO] Step 99000/100000; acc: 97.8; ppl:   2.2; xent: 0.8; lr: 0.00028; sents:  459836; bsz: 4029/2209/57; 55376/30362 tok/s;  59708 sec;
+[2025-03-16 05:22:05,965 INFO] Step 100000/100000; acc: 97.8; ppl:   2.2; xent: 0.8; lr: 0.00028; sents:  459259; bsz: 4027/2205/57; 56128/30734 tok/s;  60282 sec;
+[2025-03-16 05:26:17,432 INFO] valid stats calculation
+                           took: 251.4660975933075 s.
+[2025-03-16 05:26:17,433 INFO] Train perplexity: 2.3155
+[2025-03-16 05:26:17,433 INFO] Train accuracy: 95.0854
+[2025-03-16 05:26:17,433 INFO] Sentences processed: 4.60119e+07
+[2025-03-16 05:26:17,433 INFO] Average bsz: 4028/2204/58
+[2025-03-16 05:26:17,433 INFO] Validation perplexity: 2.27816
+[2025-03-16 05:26:17,433 INFO] Validation accuracy: 97.4924
+[2025-03-16 05:26:17,435 INFO] Saving checkpoint /home/ubuntu/tmp/nmr-to-structure-lite/002_big_explicit-h/lambda/20250315-123716/run/model_step_100000.pt
