@@ -1,15 +1,33 @@
 import json
-from itertools import product
 
 import numpy as np
 import pandas as pd
 
+from contextlib import contextmanager
+from itertools import product
 from pathlib import Path
 from parse import parse
 from plox import Plox
 
 from u_utils import canon_or_none, mol_formula_or_none, is_match_while_not_none
 
+@contextmanager
+def sfm_hist(df: pd.DataFrame, top_n: int = 10):
+    sfm = df.groupby('sample_id').sum_formula_match.sum()
+
+    with Plox() as px:
+        px.a.hist(sfm, bins=range(0, top_n + 2), rwidth=0.8, align='left', color='tab:blue')
+
+        px.a.set_xticks(range(0, top_n + 1))
+
+        px.a.set_xlabel("Sum-formula matches")
+        px.a.set_ylabel("Number of samples")
+
+        px.a.set_title(f"Sum-formula matches among top-{top_n} predictions")
+
+        px.a.grid(True, lw=0.5, alpha=0.5, zorder=-100)
+
+        yield px
 
 def process_translation(
         translation_file: Path,
@@ -51,6 +69,15 @@ def process_translation(
 
     # Sanity check: cannot have 'is_match' if not 'sum_formula_match'
     assert not df[(~df['sum_formula_match']) & df['is_match']].any().any()
+
+    sfm_hist_filepath = out_folder / f"sum_formula_match_hist.png"
+    print(f"Saving sum-formula match histogram to {sfm_hist_filepath}")
+
+    if sfm_hist_filepath.exists():
+        print(f"Already exists, skipping.")
+    else:
+        with sfm_hist(df) as px:
+            px.f.savefig(sfm_hist_filepath, dpi=300)
 
     if use_sum_formula:
         df['n'] = (
