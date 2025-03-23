@@ -71,10 +71,6 @@ class ChemBERTaEmbedder:
         return embeddings.cpu().numpy()
 
 
-def compute_dispersion(embeddings, f=cosine_distances):
-    return (1 / 2) * np.mean(f(embeddings))
-
-
 def main():
     sample_smiles = [
         "Fc1ccc(OCC2CCC3CN(c4ncc(Cl)cc4Cl)CCN3C2)cc1",

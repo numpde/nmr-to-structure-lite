@@ -1,30 +1,42 @@
 import json
-from contextlib import contextmanager
+from time import sleep
 
 import numpy as np
 import pandas as pd
 
+from contextlib import contextmanager
 from pathlib import Path
 from itertools import product
 from parse import parse
 from plox import Plox
+from sklearn.metrics.pairwise import cosine_distances
 
-from z_chembedding import ChemBERTaEmbedder, compute_dispersion
+from z_chembedding import ChemBERTaEmbedder
 from u_utils import canon_or_none, mol_formula_or_none, is_match_while_not_none
 
+embedder = ChemBERTaEmbedder(use_cuda=False)
 
-def load_data(translation_file: Path, use_chiral: bool, use_sum_formula: bool):
+
+def load_data(*, translation_file: Path, use_chiral: bool, use_sum_formula: bool):
     print(f"Reading file {translation_file.relative_to(Path(__file__).parent)}")
     out_folder = Path(__file__).with_suffix('') / translation_file.relative_to(Path(__file__).parent)
     out_folder.mkdir(parents=True, exist_ok=True)
 
-    pattern = ("{tgt_val_file}__model_step_{model_step:d}__n_best={n_best:d}"
-               "__beam_size={beam_size:d}.txt.json")
+    pattern = (
+        "{tgt_val_file}"
+        "__model_step_{model_step:d}"
+        "__n_best={n_best:d}"
+        "__beam_size={beam_size:d}"
+        ".txt.json"
+    )
     parsed = parse(pattern, translation_file.name)
     print(f"Extracted parameters: {parsed.named}")
 
     with translation_file.open('r') as fd:
         data = json.load(fd)
+
+    # Subsample for debugging
+    # data = data[:100]
 
     df = pd.DataFrame([
         {
@@ -53,7 +65,9 @@ def load_data(translation_file: Path, use_chiral: bool, use_sum_formula: bool):
         df['n'] = df.groupby('sample_id')['sum_formula_match'].cumsum().where(df['sum_formula_match'])
         df['n'] = df['n'].astype('Int64')
         print(f"Original number of samples: {len(data)}")
-        print(f"Samples left after filtering by sum formula: {df.sample_id.nunique()}")
+        print(f"Samples left after filtering hypotheses by sum formula: {df.sample_id.nunique()}")
+
+        # print(df.to_markdown())
 
     assert df.n.min() == 1
 
@@ -65,46 +79,34 @@ def load_data(translation_file: Path, use_chiral: bool, use_sum_formula: bool):
         for n in sorted(df.n.dropna().unique())
     }
     print(top_n_accuracy)
-    return df, top_n_accuracy, out_folder
+
+    return (df, top_n_accuracy, out_folder)
 
 
 def add_embeddings(df: pd.DataFrame, embedder: ChemBERTaEmbedder):
     df['embedding'] = df['pred'].apply(lambda s: embedder.embed([s])[0] if s is not None else None)
 
 
-def compute_dispersion_group(group: pd.DataFrame):
-    unique_smiles = group['pred'].dropna().unique()
-    if len(unique_smiles) < 2:
+def compute_dispersion_for_group(group: pd.DataFrame):
+    if len(group) <= 1:
         return np.nan
-    unique_embeddings = []
-    for s in unique_smiles:
-        row = group[group['pred'] == s].iloc[0]
-        if row['embedding'] is not None:
-            unique_embeddings.append(row['embedding'])
-    if len(unique_embeddings) < 2:
-        return np.nan
-    unique_embeddings = np.array(unique_embeddings)
-    return compute_dispersion(unique_embeddings)
+
+    return np.mean(cosine_distances(list(group['embedding'])))
 
 
 def compute_ref_cosine_distance_group(group: pd.DataFrame, embedder: ChemBERTaEmbedder):
-    if not (group['n'] == 1).any():
-        return np.nan
-    first_row = group[group['n'] == 1].iloc[0]
-    ref = group['ref'].iloc[0]
+    [ref] = group['ref'].unique()
+
     if ref is None:
         return np.nan
-    ref_emb = embedder.embed([ref])[0]
-    pred_emb = first_row['embedding']
-    if pred_emb is None:
-        return np.nan
-    from numpy.linalg import norm
-    def cosine_distance(u, v):
-        if norm(u) == 0 or norm(v) == 0:
-            return np.nan
-        return 1 - np.dot(u, v) / (norm(u) * norm(v))
 
-    return cosine_distance(ref_emb, pred_emb)
+    if not (group.n == 1).any():
+        return np.nan
+
+    [ref_emb] = embedder.embed([ref])
+    [pred_emd] = group[group.n == 1]['embedding']
+
+    return cosine_distances([ref_emb, pred_emd])[0, 1]
 
 
 @contextmanager
@@ -117,9 +119,9 @@ def plot_histogram(dispersion_matched, dispersion_unmatched, top_n_accuracy, n):
         if dispersion_unmatched:
             px.a.hist(dispersion_unmatched, bins=bins, alpha=0.6,
                       label="Samples without top-n match", color="tab:red")
-        px.a.set_xlabel("Dispersion (1/2 avg. cosine distance)")
-        px.a.set_ylabel("Number of Samples")
-        px.a.set_title(f"Dispersion Histogram (Top-{n} Predictions, Accuracy: {top_n_accuracy[n]:.2%})")
+        px.a.set_xlabel("Average mutual cosine distance of predictions")
+        px.a.set_ylabel("Number of samples")
+        px.a.set_title(f"Dispersion histogram (top-{n} predictions, accuracy: {top_n_accuracy[n]:.2%})")
         px.a.legend()
         px.a.grid(True, lw=0.5, alpha=0.5)
 
@@ -129,10 +131,12 @@ def plot_histogram(dispersion_matched, dispersion_unmatched, top_n_accuracy, n):
 @contextmanager
 def plot_scatter(scatter_df, n, is_match):
     with Plox({'figure.figsize': (10, 6)}) as px:
-        scatter_df = scatter_df[scatter_df['cosine_distance'] > 0]
+        # scatter_df = scatter_df[scatter_df['cosine_distance'] > 0]
+        px.a.set_xlim(-0.02, 0.52)
+        px.a.set_ylim(-0.02, 1.02)
         px.a.scatter(scatter_df['dispersion'], scatter_df['cosine_distance'], alpha=0.6)
-        px.a.set_xlabel("Dispersion (1/2 avg. cosine distance)")
-        px.a.set_ylabel("Cosine Distance (Reference vs First Prediction)")
+        px.a.set_xlabel("Average mutual cosine distance of predictions")
+        px.a.set_ylabel("Cosine distance of reference to first prediction")
         px.a.set_title(f"Dispersion vs. cosine distance (top-{n} predictions, {is_match = })")
         px.a.grid(True, lw=0.5, alpha=0.5)
         yield px
@@ -145,15 +149,14 @@ def process_top_n(
         top_n_accuracy: dict,
         out_folder: Path,
         use_chiral: bool,
-        use_sum_formula: bool
+        use_sum_formula: bool,
 ):
     print(f"Processing top-{n} predictions")
     df_n = df[df.n <= n].copy()
     sample_match = df_n.groupby('sample_id').is_match.any()
 
-    # Compute dispersion per sample (avoid deprecation warning with include_groups=False)
     sample_dispersion = df_n.groupby('sample_id').apply(
-        lambda group: compute_dispersion_group(group.drop(columns='sample_id'))
+        lambda group: compute_dispersion_for_group(group)
     )
 
     dispersion_matched = [
@@ -175,7 +178,7 @@ def process_top_n(
 
     # Compute cosine distance between reference and first prediction per sample.
     sample_ref_cosine = df_n.groupby('sample_id').apply(
-        lambda group: compute_ref_cosine_distance_group(group.drop(columns='sample_id'), embedder)
+        lambda group: compute_ref_cosine_distance_group(group, embedder)
     )
 
     for is_match in [True, False]:
@@ -192,13 +195,16 @@ def process_top_n(
             print(f"Saved plot to {out_folder / scatter_filename}")
 
 
-def process_translation(translation_file: Path, use_chiral: bool = True, use_sum_formula: bool = False):
-    df, top_n_accuracy, out_folder = load_data(translation_file, use_chiral, use_sum_formula)
-    embedder = ChemBERTaEmbedder(use_cuda=False)
+def process_translation(translation_file: Path, **params):
+    print(f"Processing translation file {translation_file}")
+    (df, top_n_accuracy, out_folder) = load_data(translation_file=translation_file, **params)
+
+    print(f"Computing embeddings for {len(df)} predictions")
     add_embeddings(df, embedder)
+
     # Process desired top-n predictions (e.g., top-6)
     for n in [3, 6]:
-        process_top_n(n, df, embedder, top_n_accuracy, out_folder, use_chiral, use_sum_formula)
+        process_top_n(n, df, embedder, top_n_accuracy, out_folder, **params)
 
 
 def main():
@@ -211,8 +217,9 @@ def main():
     ]
 
     for translation_file in translations:
-        for use_chiral, use_sum_formula in product([True, False], [True, False]):
-            process_translation(translation_file, use_chiral=use_chiral, use_sum_formula=use_sum_formula)
+        use_chiral = True
+        use_sum_formula = True
+        process_translation(translation_file, use_chiral=use_chiral, use_sum_formula=use_sum_formula)
 
 
 if __name__ == "__main__":
