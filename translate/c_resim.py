@@ -183,9 +183,7 @@ def main():
     print(f"Found {len(translations)} translation files: ", *translations, sep="\n")
 
     for file in translations:
-        out_file = file.relative_to(Path(__file__).parent)
-        out_file = out_file.relative_to(out_file.parts[0])
-        out_file = Path(__file__).with_suffix('') / out_file
+        out_file = Path(__file__).with_suffix('') / file.relative_to(Path(__file__).parent)
         out_file = out_file.with_name(out_file.name + "-resim.jsonl")
         out_file.parent.mkdir(parents=True, exist_ok=True)
 
