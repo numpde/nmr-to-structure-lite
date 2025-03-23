@@ -118,10 +118,15 @@ def save_json(json_obj: Any, dest_file: Path):
 
 
 if __name__ == "__main__":
-    translations: list[Path] = list(Path(__file__).parent.glob("work/**/translation/*.log"))
+    translations: list[Path] = list(Path(__file__).parent.glob("a_*/**/translation/*.log"))
 
     for file in translations:
-        archive_path = file.with_suffix(".json")
+        archive_path = file.relative_to(Path(__file__).parent)
+        archive_path = archive_path.relative_to(archive_path.parts[0])
+        archive_path = Path(__file__).with_suffix('') / archive_path
+        archive_path = archive_path.with_suffix(".json")
+        archive_path.parent.mkdir(parents=True, exist_ok=True)
+
         if archive_path.exists():
             print(f"Skipping {file}: JSON file already exists.")
             continue

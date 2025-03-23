@@ -8,7 +8,6 @@ from pathlib import Path
 from parse import parse
 from plox import Plox
 
-
 from u_utils import canon_or_none, mol_formula_or_none, is_match_while_not_none
 
 
@@ -86,7 +85,11 @@ def process_translation(
 
         df_n = df[df.n <= n].copy()
 
-        filename = f"prediction_score_hist__use_chiral={use_chiral}__use_sum_formula={use_sum_formula}__top-{n}.png"
+        filepath = out_folder / f"prediction_score_hist__use_chiral={use_chiral}__use_sum_formula={use_sum_formula}__top-{n}.png"
+
+        if filepath.exists():
+            print(f"Skipping existing file {filepath}")
+            continue
 
         (score_a, score_b) = (-0.5, 0)
 
@@ -179,13 +182,13 @@ def process_translation(
                 bbox=dict(facecolor='white', alpha=0.4, edgecolor='none')
             )
 
-            px.f.savefig(out_folder / filename, dpi=300)
+            px.f.savefig(filepath, dpi=300)
 
-            print(f"Saved plot to {out_folder / filename}")
+            print(f"Saved plot to {filepath}")
 
 
 def main():
-    translations: list[Path] = list(Path(__file__).parent.glob("work/**/translation/*.txt.json"))
+    translations: list[Path] = list(Path(__file__).parent.glob("b_*/**/translation/*.txt.json"))
 
     translations = [
         translation_file

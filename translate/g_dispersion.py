@@ -202,7 +202,7 @@ def process_translation(translation_file: Path, use_chiral: bool = True, use_sum
 
 
 def main():
-    translations = list(Path(__file__).parent.glob("work/**/translation/*.txt.json"))
+    translations = list(Path(__file__).parent.glob("b_*/**/translation/*.txt.json"))
 
     translations = [
         t for t in translations

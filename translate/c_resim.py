@@ -172,18 +172,30 @@ def resim_hypotheses_file(file: Path):
 
 
 def main():
-    translations: list[Path] = list(Path(__file__).parent.glob("work/**/translation/*.json"))
+    translations: list[Path] = list(Path(__file__).parent.glob("b_*/**/translation/*.json"))
 
     translations = [
         file
         for file in translations
-        if "_100000" in file.name
+        if ("_100000" in file.name) and ("_n1000." in file.name)
     ]
 
     print(f"Found {len(translations)} translation files: ", *translations, sep="\n")
 
     for file in translations:
-        out_file = file.with_name(file.name + "-resim.jsonl")
+        out_file = file.relative_to(Path(__file__).parent)
+        out_file = out_file.relative_to(out_file.parts[0])
+        out_file = Path(__file__).with_suffix('') / out_file
+        out_file = out_file.with_name(out_file.name + "-resim.jsonl")
+        out_file.parent.mkdir(parents=True, exist_ok=True)
+
+        print(out_file)
+
+        if out_file.exists():
+            print(f"Skipping existing file: {out_file}")
+            continue
+        else:
+            print(f"Re-simulation file: {file}")
 
         with out_file.open(mode='wt') as fd:
             for entry in resim_hypotheses_file(file):

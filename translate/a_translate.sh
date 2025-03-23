@@ -39,7 +39,10 @@ RUN_PATH=$(realpath -s "${RUN_PATH}")
 EXPERIMENT_PATH_SUFFIX=${EXPERIMENT_PATH#${RESULTS_PATH}/}
 echo "Experiment path suffix: ${EXPERIMENT_PATH_SUFFIX}"
 
-WORK_PATH="${THIS_PATH}/work/${EXPERIMENT_PATH_SUFFIX}"
+# This script's filename (no extension):
+SELF_NAME=$(basename "$0" .sh)
+
+WORK_PATH="${THIS_PATH}/${SELF_NAME}/${EXPERIMENT_PATH_SUFFIX}"
 mkdir -p "${WORK_PATH}"
 
 WORK_DATA_PATH="${WORK_PATH}/data"
@@ -49,7 +52,7 @@ WORK_TRANSLATION_PATH="${WORK_PATH}/translation"
 mkdir -p "${WORK_TRANSLATION_PATH}"
 
 # Sample from the test set
-N=10000 # Number of samples
+N=1000 # Number of samples
 WORK_SRC_TST="${WORK_DATA_PATH}/src-test_n$N.txt"
 WORK_TGT_TST="${WORK_DATA_PATH}/tgt-test_n$N.txt"
 paste "${DATA_PATH}/src-test.txt" "${DATA_PATH}/tgt-test.txt" | \
@@ -59,6 +62,10 @@ paste "${DATA_PATH}/src-test.txt" "${DATA_PATH}/tgt-test.txt" | \
 
 [ ! -z "$2" ] && CHECKPOINT="_$2" || CHECKPOINT="_100000"
 CHECKPOINT=$(find "${RUN_PATH}" -name "model_step_*.pt" | grep "${CHECKPOINT}.pt" | sort -V | tail -n 1)
+
+# If no checkpoint is found, abort:
+[ "$CHECKPOINT" ] || log_error_and_exit "No checkpoint found."
+
 # Filename (no extension)
 CHECKPOINT_NAME=$(basename "${CHECKPOINT}" .pt)
 

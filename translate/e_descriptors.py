@@ -146,7 +146,7 @@ def process_translation(translation_file: Path):
 
 
 def main():
-    translations: list[Path] = list(Path(__file__).parent.glob("work/**/translation/*.txt.json"))
+    translations: list[Path] = list(Path(__file__).parent.glob("b_*/**/translation/*.txt.json"))
 
     translations = [
         translation_file
