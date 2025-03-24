@@ -6,6 +6,44 @@ from rdkit.Chem.rdForceFieldHelpers import UFFHasAllMoleculeParams
 from rdkit import Chem
 from rdkit.Chem import AllChem, rdMolDescriptors
 
+from rdkit import Chem
+
+
+def compute_ihd(mol):
+    """
+    Calculate the index of hydrogen deficiency (IHD) by looping over the atoms
+    and counting how many carbons, hydrogens, nitrogens, and halogens are present.
+    """
+
+    # # Example usage:
+    # mol = Chem.MolFromSmiles("CC(=O)O")  # Acetic acid
+    # print("IHD:", compute_ihd(mol))
+
+    # Make hydrogens explicit (if they aren't already)
+    mol = Chem.AddHs(mol)
+    nC = 0
+    nH = 0
+    nN = 0
+    nHal = 0
+
+    # Atomic numbers for halogens: F (9), Cl (17), Br (35), I (53)
+    halogens = {9, 17, 35, 53}
+
+    for atom in mol.GetAtoms():
+        Z = atom.GetAtomicNum()
+        if Z == 1:
+            nH += 1
+        elif Z == 6:
+            nC += 1
+        elif Z == 7:
+            nN += 1
+        elif Z in halogens:
+            nHal += 1
+
+    # IHD = (2C + 2 + N - H - X) / 2
+    ihd = (2 * nC + 2 + nN - nH - nHal) / 2
+    return ihd
+
 
 def get_symmetry_number(mol):
     """
