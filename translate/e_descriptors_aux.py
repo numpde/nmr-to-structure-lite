@@ -1,12 +1,7 @@
 from rdkit import Chem
-from rdkit.Chem import rdMolDescriptors
-from rdkit.Chem.rdPartialCharges import ComputeGasteigerCharges
+
 from rdkit.Chem.rdForceFieldHelpers import UFFHasAllMoleculeParams
-
-from rdkit import Chem
 from rdkit.Chem import AllChem, rdMolDescriptors
-
-from rdkit import Chem
 
 
 def compute_ihd(mol):
