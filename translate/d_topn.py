@@ -79,6 +79,8 @@ def process_translation(
         with sfm_hist(df) as px:
             px.f.savefig(sfm_hist_filepath, dpi=300)
 
+    # return
+
     if use_sum_formula:
         df['n'] = (
             df.groupby('sample_id')['sum_formula_match']

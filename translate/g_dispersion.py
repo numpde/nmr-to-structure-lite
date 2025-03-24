@@ -20,8 +20,6 @@ def get_embedder():
 
 def load_data(*, translation_file: Path, use_chiral: bool, use_sum_formula: bool):
     print(f"Reading file {translation_file.relative_to(Path(__file__).parent)}")
-    out_folder = Path(__file__).with_suffix('') / translation_file.relative_to(Path(__file__).parent)
-    out_folder.mkdir(parents=True, exist_ok=True)
 
     pattern = (
         "{tgt_val_file}"
@@ -37,7 +35,7 @@ def load_data(*, translation_file: Path, use_chiral: bool, use_sum_formula: bool
         data = json.load(fd)
 
     # Subsample for debugging
-    # data = data[:100]
+    # data = data[:100]; print(f"Subsampled to {len(data) = }")
 
     df = pd.DataFrame([
         {
@@ -81,7 +79,7 @@ def load_data(*, translation_file: Path, use_chiral: bool, use_sum_formula: bool
     }
     print(top_n_accuracy)
 
-    return (df, top_n_accuracy, out_folder)
+    return df
 
 
 def compute_dispersion_for_group(group: pd.DataFrame):
@@ -91,9 +89,7 @@ def compute_dispersion_for_group(group: pd.DataFrame):
     return np.mean(cosine_distances(list(group['embedding'])))
 
 
-def compute_ref_cosine_distance_group(group: pd.DataFrame):
-    embedder = get_embedder()
-
+def compute_ref_cosine_distance_group(group: pd.DataFrame, embedder):
     [ref] = group['ref'].unique()
 
     if ref is None:
@@ -109,19 +105,22 @@ def compute_ref_cosine_distance_group(group: pd.DataFrame):
 
 
 @contextmanager
-def plot_histogram(dispersions: pd.DataFrame, top_n_accuracy: dict, top_n: int):
+def plot_histogram(matched, unmatched, top_n: int):
     with Plox({'figure.figsize': (10, 6)}) as px:
         bins = np.linspace(0, 0.2, 2 ** 6 + 1)
 
-        matched = dispersions['dispersion'][dispersions['is_topn_match']]
-        unmatched = dispersions['dispersion'][~dispersions['is_topn_match']]
+        # matched = matched[matched > bins[1]]
+        # unmatched = unmatched[unmatched > bins[1]]
 
-        px.a.hist(matched, bins=bins, alpha=0.6, label=f"Samples with top-{top_n} match", color="tab:blue")
-        px.a.hist(unmatched, bins=bins, alpha=0.6, label=f"Samples without top-{top_n} match", color="tab:red")
+        params = {
+            'density': True,
+            'bins': bins,
+            'alpha': 0.6,
+        }
 
-        px.a.set_xlabel("Average mutual cosine distance of predictions")
-        px.a.set_ylabel("Number of samples")
-        px.a.set_title(f"Dispersion of top-{top_n} predictions (accuracy: {top_n_accuracy[top_n]:.2%})")
+        px.a.hist(matched, **params, label=f"Samples with top-{top_n} match", color="tab:blue")
+        px.a.hist(unmatched, **params, label=f"Samples without top-{top_n} match", color="tab:red")
+
         px.a.legend()
         px.a.grid(True, lw=0.5, alpha=0.5)
 
@@ -129,93 +128,128 @@ def plot_histogram(dispersions: pd.DataFrame, top_n_accuracy: dict, top_n: int):
 
 
 @contextmanager
-def plot_scatter(scatter_df, top_n, is_topn_match, color):
-    with Plox({'figure.figsize': (10, 6)}) as px:
+def plot_scatter(scatter_df, top_n, is_topn_match, color, do_r2):
+    (w, h) = (10, 6)
+    with Plox({'figure.figsize': (w, h)}) as px:
         # scatter_df = scatter_df[scatter_df['cosine_distance'] > 0]
         (xx, yy) = (scatter_df['dispersion'], scatter_df['ref_to_first'])
-        px.a.set_xlim(-0.02, 0.52)
-        px.a.set_ylim(-0.02, 1.02)
-        px.a.scatter(xx, yy, alpha=0.3, s=5, edgecolors='none', color=color)
+        px.a.set_xlim(-0.02, 0.32)
+        px.a.set_ylim(-0.02, 0.52)
+        px.a.scatter(xx, yy, alpha=0.3, s=10, edgecolors='none', color=color)
         px.a.set_xlabel("Average mutual cosine distance of predictions")
         px.a.set_ylabel("Cosine distance of reference to first prediction")
-        px.a.set_title(f"Dispersion vs. cosine distance (top-{top_n} predictions, {is_topn_match = })")
+        px.a.set_title(f"Distance of top-{top_n} to reference vs. their dispersion ({is_topn_match = })")
+
+        if do_r2:
+            from sklearn.linear_model import LinearRegression
+            from sklearn.metrics import r2_score
+
+            not_nan = ~np.isnan(xx) & ~np.isnan(yy)
+            (xx, yy) = (xx[not_nan], yy[not_nan])
+
+            reg = LinearRegression().fit(xx.values.reshape(-1, 1), yy)
+            r2 = r2_score(yy, reg.predict(xx.values.reshape(-1, 1)))
+
+            px.a.plot(xx, reg.predict(xx.values.reshape(-1, 1)), color='black', lw=1)
+            px.a.text(0.01, 0.45, f"R² = {r2:.2f}", color='black')
+
         px.a.grid(True, lw=0.5, alpha=0.5)
         yield px
 
 
-def process_top_n(
-        top_n: int,
-        df: pd.DataFrame,
-        top_n_accuracy: dict,
-        out_folder: Path,
-        use_chiral: bool,
-        use_sum_formula: bool,
-):
-    print(f"Processing top-{top_n} predictions")
-
-    datafile = out_folder / f"dispersions__use_chiral={use_chiral}__use_sum_formula={use_sum_formula}__top-{top_n}.tsv.gz"
-
-    if datafile.exists():
-        print(f"Not recomputing dispersion data, already exists: {datafile}")
-
-        dispersions = pd.read_csv(
-            datafile,
-            compression='gzip',
-            sep='\t',
-            index_col=0,
-        )
-    else:
-        print(f"Computing embeddings for {len(df)} predictions")
-
-        embedder = get_embedder()
-
-        if 'embedding' not in df.columns:
-            df['embedding'] = df['pred'].apply(lambda s: embedder.embed([s])[0] if s is not None else None)
-
-        # Note, this step filters predictions with the wrong sum formula if this was enabled in `load_data`
-        df_n = df[df.n <= top_n].copy()
-
-        dispersions = pd.DataFrame({
-            'is_topn_match': df_n.groupby('sample_id').is_match.any(),
-            'dispersion': df_n.groupby('sample_id').apply(
-                compute_dispersion_for_group,
-                include_groups=False,
-            ),
-            'ref_to_first': df_n.groupby('sample_id').apply(
-                functools.partial(compute_ref_cosine_distance_group, embedder=embedder),
-                include_groups=False,
-            )
-        })
-
-        dispersions.to_csv(
-            datafile,
-            compression='gzip',
-            sep='\t',
-        )
-
-    with plot_histogram(dispersions, top_n_accuracy=top_n_accuracy, top_n=top_n) as px:
-        hist_file = datafile.with_name(f"{datafile.name}-disperion_hist.png")
-        px.f.savefig(hist_file, dpi=300)
-        print(f"Saved plot to {hist_file}")
-
-    for is_topn_match in [True, False]:
-        scatter_df = dispersions[dispersions['is_topn_match'] == is_topn_match]
-
-        color = "tab:blue" if is_topn_match else "tab:red"
-
-        with plot_scatter(scatter_df, top_n=top_n, is_topn_match=is_topn_match, color=color) as px:
-            scat_file = datafile.with_name(f"{datafile.name}-disperion_hist__is_topn_match={is_topn_match}.png")
-            px.f.savefig(scat_file, dpi=300)
-            print(f"Saved plot to {scat_file}")
 
 
-def process_translation(translation_file: Path, **params):
+def process_translation(translation_file: Path, use_chiral: bool, use_sum_formula: bool):
     print(f"Processing translation file {translation_file}")
-    (df, top_n_accuracy, out_folder) = load_data(translation_file=translation_file, **params)
 
-    # Process desired top-n predictions (e.g., top-6)
-    for n in [3, 6]:
-        process_top_n(n, df, top_n_accuracy, out_folder, **params)
+    out_folder = Path(__file__).with_suffix('') / translation_file.relative_to(Path(__file__).parent)
+    out_folder.mkdir(parents=True, exist_ok=True)
+
+    (df, top_n_accuracy) = (None, None)
+
+    for top_n in [3, 6]:
+        print(f"Processing top-{top_n} predictions")
+
+        datafile = out_folder / f"dispersions__use_chiral={use_chiral}__use_sum_formula={use_sum_formula}__top-{top_n}.tsv.gz"
+
+        if datafile.exists():
+            print(f"Not recomputing dispersion data, already exists: {datafile}")
+
+            dispersions = pd.read_csv(
+                datafile,
+                compression='gzip',
+                sep='\t',
+                index_col=0,
+            )
+        else:
+            print(f"Loading the data for {translation_file}")
+
+            df = load_data(translation_file=translation_file, use_chiral=use_chiral, use_sum_formula=use_sum_formula)
+
+            print(f"Computing embeddings for {len(df)} predictions")
+
+            embedder = get_embedder()
+
+            if 'embedding' not in df.columns:
+                df['embedding'] = df['pred'].apply(lambda s: embedder.embed([s])[0] if s is not None else None)
+
+            # Note, this step filters predictions with the wrong sum formula if this was enabled in `load_data`
+            df_n = df[df.n <= top_n].copy()
+
+            dispersions = pd.DataFrame({
+                'is_topn_match': df_n.groupby('sample_id').is_match.any(),
+                'dispersion': df_n.groupby('sample_id').apply(
+                    compute_dispersion_for_group,
+                    include_groups=False,
+                ),
+                'ref_to_first': df_n.groupby('sample_id').apply(
+                    functools.partial(compute_ref_cosine_distance_group, embedder=embedder),
+                    include_groups=False,
+                )
+            })
+
+            dispersions.to_csv(
+                datafile,
+                compression='gzip',
+                sep='\t',
+            )
+
+        top_n_accuracy = dispersions['is_topn_match'].mean()
+
+        xlabel = {
+            'dispersion': f"Average mutual cosine distance of predictions",
+            'ref_to_first': f"Cosine distance",
+        }
+
+        title = {
+            'dispersion': f"Dispersion of top-{top_n} predictions (normalized)", # (accuracy: {top_n_accuracy:.2%})",
+            'ref_to_first': f"Cosine distance of reference to top prediction (normalized)",
+        }
+
+        for val in ['dispersion', 'ref_to_first']:
+            matched = dispersions[val][dispersions['is_topn_match']]
+            unmatched = dispersions[val][~dispersions['is_topn_match']]
+
+            with plot_histogram(matched, unmatched, top_n=top_n) as px:
+                # px.a.set_ylabel("Number of samples")
+                px.a.set_yticks([])
+                px.a.set_xlabel(xlabel[val])
+                px.a.set_title(title[val])
+
+                hist_file = datafile.with_name(f"{datafile.name}-disperion_hist__val={val}.png")
+
+                px.f.savefig(hist_file, dpi=300)
+                print(f"Saved plot to {hist_file}")
+
+        for is_topn_match in [True, False]:
+            scatter_df = dispersions[dispersions['is_topn_match'] == is_topn_match]
+
+            color = "tab:blue" if is_topn_match else "tab:red"
+
+            with plot_scatter(scatter_df, top_n=top_n, is_topn_match=is_topn_match, color=color, do_r2=(not is_topn_match)) as px:
+                scat_file = datafile.with_name(f"{datafile.name}-disperion_hist__is_topn_match={is_topn_match}.png")
+                px.f.savefig(scat_file, dpi=300)
+                print(f"Saved plot to {scat_file}")
 
 
 def main():
