@@ -202,6 +202,10 @@ def compute_nmr_difficulty_descriptors(smiles):
         # Alpha heteroatom protons: counts protons on carbons adjacent to heteroatoms,
         # impacting reactivity and chemical shifts in NMR spectra.
         'Alpha heteroatom protons': get_alpha_heteroatom_protons(mol),
+
+        # # Index of hydrogen deficiency: calculates the IHD based on the molecular formula,
+        # # which is related to the degree of unsaturation.
+        # 'IHD': compute_ihd(mol),
     }
 
 
