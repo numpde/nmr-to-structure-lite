@@ -41,7 +41,7 @@ def get_avg_gasteiger_charge(mol):
     # Compute Gasteiger charges (make sure AllChem is imported)
     AllChem.ComputeGasteigerCharges(mol)
     charges = [atom.GetDoubleProp('_GasteigerCharge') for atom in mol.GetAtoms()]
-    return sum(charges) / len(charges) if charges else 0
+    return sum(charges) / (len(charges) or 1)
 
 
 def get_fused_ring_count(mol):
@@ -209,3 +209,13 @@ def compute_descriptors(smiles):
         "Num_Bromine": sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == "Br"),  # Bromine count
         "Num_Iodine": sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == "I"),  # Iodine count
     }
+
+
+if __name__ == "__main__":
+    smiles = "N # C C C C c 1 n c c c c 1 N".replace(" ", "")
+
+    # Count the number of atoms in the SMILES using RDKit
+    mol = Chem.MolFromSmiles(smiles)
+    print(f"Number of atoms: {mol.GetNumAtoms()}")
+
+    print(compute_nmr_difficulty_descriptors(smiles))
