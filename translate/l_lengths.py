@@ -58,6 +58,8 @@ def process_translation(translation_file: Path):
         for (n, hyp) in enumerate(sample['hyps'], start=1)
     ])
 
+    print(df.head())
+
     if 'is_match' in df.columns:
         # Sanity check: cannot have 'is_match' if not 'sum_formula_match'
         assert not df[(~df['sum_formula_match']) & df['is_match']].any().any()
@@ -84,11 +86,12 @@ def process_translation(translation_file: Path):
 
     def plot_dist(all_smiles: pd.Series, **params):
         all_smiles = pd.Series(all_smiles)
-        all_smiles = all_smiles.str.replace(" ", "")
+
+        lengths = all_smiles.str.split(" ").apply(len)
 
         xx = np.linspace(0, max_len, 1 + (2 ** 10))
 
-        kde = gaussian_kde(all_smiles.str.len(), bw_method=0.05)
+        kde = gaussian_kde(lengths, bw_method=0.05)
         yy = kde(xx)
 
         yy /= np.trapezoid(yy, xx)
