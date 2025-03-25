@@ -118,7 +118,7 @@ def process_translation(translation_file: Path):
 
         px.a.grid(True, lw=0.5, alpha=0.5, zorder=-100)
 
-        px.a.set_xlabel("SMILES length")
+        px.a.set_xlabel("SMILES length (tokens)")
         px.a.set_yticks([])
 
         # Set xticks/xlabels as multiples of 10
@@ -128,7 +128,7 @@ def process_translation(translation_file: Path):
         px.a.set_xticklabels([f"{x}" for x in px.a.get_xticks()])
 
 
-        px.a.set_title("Length distribution of predicted SMILES")
+        px.a.set_title("Length distribution of reference/predicted SMILES")
 
         px.a.legend()
 
