@@ -67,4 +67,4 @@ conda create -y --name nmr-to-structure-lite python=3.9
 # Activate the new environment:
 conda activate nmr-to-structure-lite
 # Install the required packages:
-pip install -r "$(dirname "$0")/requirements.txt"
+pip install -r "$(dirname "$0")/requirements.training.txt"
