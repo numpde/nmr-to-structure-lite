@@ -126,7 +126,7 @@ grep -q "{}" "${CONFIG_FILE}" && log_error_and_exit "Unresolved placeholders in 
 if [ -f "${RUN_PATH}/src_vocab.txt" ] && [ -f "${RUN_PATH}/tgt_vocab.txt" ]; then
   echo "Vocabulary files already exist in ${RUN_PATH}"
 else
-  onmt_build_vocab -config "${CONFIG_FILE}" -n_sample 10000
+  onmt_build_vocab -config "${CONFIG_FILE}" -n_sample 1000000
 fi
 
 
