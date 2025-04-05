@@ -133,4 +133,6 @@ if __name__ == "__main__":
 
         # Assume main() returns a JSON-serializable object (e.g., a list or dict)
         parsed_json = main(file)
-        save_json(parsed_json, archive_path)
+
+        if parsed_json:
+            save_json(parsed_json, archive_path)

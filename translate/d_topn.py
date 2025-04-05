@@ -222,11 +222,13 @@ def main():
     translations = [
         translation_file
         for translation_file in translations
-        if ("_100000_" in translation_file.name) or ("_250000_" in translation_file.name)
+        #
+        #if ("_100000_" in translation_file.name) or ("_250000_" in translation_file.name)
+        if ("003_big" in str(translation_file)) and ("_100000_" in translation_file.name)
     ]
 
     for translation_file in translations:
-        for (use_chiral, use_sum_formula) in product([True, False], [True, False]):
+        for (use_chiral, use_sum_formula) in product([False], [True]):
             process_translation(translation_file, use_chiral=use_chiral, use_sum_formula=use_sum_formula)
 
 

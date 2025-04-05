@@ -52,7 +52,7 @@ WORK_TRANSLATION_PATH="${WORK_PATH}/translation"
 mkdir -p "${WORK_TRANSLATION_PATH}"
 
 # Sample from the test set
-N=1000 # Number of samples
+N=10000 # Number of samples
 WORK_SRC_TST="${WORK_DATA_PATH}/src-test_n$N.txt"
 WORK_TGT_TST="${WORK_DATA_PATH}/tgt-test_n$N.txt"
 paste "${DATA_PATH}/src-test.txt" "${DATA_PATH}/tgt-test.txt" | \
