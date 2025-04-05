@@ -1,2 +1,3 @@
 results/001_big/lambda/20250309-220000/run/tensorboard/Mar-09_18-51-33/events.out.tfevents.1741546293.150-136-93-242.5505.0
 results/002_big_explicit-h/lambda/20250315-123716/run/tensorboard/Mar-15_12-37-23/events.out.tfevents.1742042243.lambda.13063.0
+results/003_big_ex-h_mono/lambda/20250403-133350/run/tensorboard/Apr-03_13-34-27/events.out.tfevents.1743687267.lambda.6557.0

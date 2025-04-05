@@ -59,7 +59,9 @@ with Plox() as px:
     px.a.set_xlabel("Training step (number of batches)")
     px.a.set_ylabel("Validation accuracy, %")
 
-    px.a.legend()
+    (hh, ll) = px.a.get_legend_handles_labels()
+    px.a.legend(reversed(hh), reversed(ll), loc='lower right', fontsize=10)
+
     px.a.grid(True, lw=0.5, alpha=0.5)
 
     px.f.savefig(figure_filename, dpi=300)
