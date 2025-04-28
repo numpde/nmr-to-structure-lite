@@ -157,8 +157,6 @@ def plot_scatter(scatter_df, top_n, is_topn_match, color, do_r2):
         yield px
 
 
-
-
 def process_translation(translation_file: Path, use_chiral: bool, use_sum_formula: bool):
     print(f"Processing translation file {translation_file}")
 
@@ -181,6 +179,8 @@ def process_translation(translation_file: Path, use_chiral: bool, use_sum_formul
                 sep='\t',
                 index_col=0,
             )
+
+            df = None
         else:
             print(f"Loading the data for {translation_file}")
 
@@ -208,13 +208,19 @@ def process_translation(translation_file: Path, use_chiral: bool, use_sum_formul
                 )
             })
 
+        if not 'ref' in dispersions.columns:
+            print("Attaching reference to the dispersion data and saving it again")
+
+            if df is None:
+                df = load_data(translation_file=translation_file, use_chiral=use_chiral, use_sum_formula=use_sum_formula)
+
+            dispersions = dispersions.join(df.groupby('sample_id').first()['ref'])
+
             dispersions.to_csv(
                 datafile,
                 compression='gzip',
                 sep='\t',
             )
-
-        top_n_accuracy = dispersions['is_topn_match'].mean()
 
         xlabel = {
             'dispersion': f"Average mutual cosine distance of predictions",
@@ -222,7 +228,7 @@ def process_translation(translation_file: Path, use_chiral: bool, use_sum_formul
         }
 
         title = {
-            'dispersion': f"Dispersion of top-{top_n} predictions (normalized)", # (accuracy: {top_n_accuracy:.2%})",
+            'dispersion': f"Dispersion of top-{top_n} predictions (normalized)",  # (accuracy: {top_n_accuracy:.2%})",
             'ref_to_first': f"Cosine distance of reference to top prediction (normalized)",
         }
 
