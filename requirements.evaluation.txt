@@ -58,7 +58,7 @@ OpenNMT-py==3.5.1
 packaging==24.2
 pandas==2.2.3
 parse==1.20.2
-pillow==11.0.0
+pillow==12.1.1
 plox==0.0.3
 portalocker==3.1.1
 preshed==3.0.9
