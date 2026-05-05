@@ -175,3 +175,6 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Generated experiment archives
+nmr-to-structure-lite__results.zip
